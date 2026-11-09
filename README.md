@@ -6,6 +6,8 @@
 
 ![预览](docs/preview.png)
 
+[在线试玩这个示例](https://kerrychia.github.io/quiz-review/)（9 题，够看出交互是什么样）
+
 ---
 
 ## 怎么用
