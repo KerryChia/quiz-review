@@ -137,10 +137,13 @@ def validate(course, packs):
                         if not str(fld.get("a", "")).strip():
                             errors.append(f"{label}: 缺少答案 a")
                         if fld.get("kind") == "num":
-                            pool = [fld.get("a")] + list(fld.get("alt") or [])
-                            for v in pool:
-                                if v is not None and not is_number(v):
-                                    errors.append(f"{label}: kind=num 但 {v!r} 不是数值/分数")
+                            if not is_number(fld.get("a")):
+                                errors.append(f"{label}: kind=num 但答案 a={fld.get('a')!r} 不是数值/分数")
+                            for v in fld.get("alt") or []:
+                                if not is_number(v):
+                                    warnings_list.append(
+                                        f"{label}: alt 里的 {v!r} 不是数值，将按逐字比对（适合 e^{-1} 这类写法）"
+                                    )
                         for v in [fld.get("a")] + list(fld.get("alt") or []):
                             if v is not None:
                                 check_text(label, str(v), errors, warnings)
@@ -148,7 +151,7 @@ def validate(course, packs):
                 if not q.get("points"):
                     warnings_list.append(f"{where}: 主观题没有 points，AI 判卷默认按 10 分")
                 sol = str(q.get("solution", ""))
-                if sol and not re.search(r"评分|给分|分步|步骤|要点", sol):
+                if sol and not re.search(r"评分|给分|分步|步骤|要点|第\s*[0-9一二三四五六七八九十]+\s*步", sol):
                     warnings_list.append(f"{where}: 解析里没有看到评分点，AI 判卷会缺少依据")
 
     return {

@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#faf9f6">
+<title>数据结构与算法 · 期末复习</title>
+<style>
+:root{--bg:#faf9f6;--surface:#fff;--ink:#241f1e;--muted:#6d6663;--line:#e5e0d8;--gold:#9E1B2C;--gold-bg:#fbf1f1;--blue:#2c4f7c;--blue-bg:#eef2f7;--green:#2f6b4f;--green-bg:#edf4ef;--red:#a33e32;--red-bg:#fbeeea;--radius:16px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;transition:background .15s,border-color .15s,color .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:disabled{cursor:default}
+a{color:var(--blue)}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 28px 46px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.03em;min-width:0}
+.brandmark{display:grid;place-items:center;background:var(--ink);color:#fff;border-radius:10px;width:36px;height:36px;flex:0 0 36px;font-family:Georgia,serif;font-size:19px}
+.brand>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topnote{color:var(--muted);font-size:12px;text-align:right;white-space:nowrap}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.tab{background:transparent;border:1px solid var(--line);border-radius:10px;padding:9px 13px;color:var(--muted);font-size:13px}
+.tab:hover{border-color:#cfc7b8;color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.layout{display:grid;grid-template-columns:252px minmax(0,1fr);gap:24px;align-items:start}
+.sidebar{position:sticky;top:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel+.panel{margin-top:14px}
+.panel h2{font-size:15px;margin:0 0 4px}
+.panel p{margin:0;font-size:12.5px;color:var(--muted)}
+.pack-subtitle{font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.6}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.stat-number{font:700 25px/1.1 -apple-system,"Segoe UI",Roboto,"PingFang SC",sans-serif;color:var(--gold);font-variant-numeric:lining-nums tabular-nums}
+.stat-label{font-size:11.5px;color:var(--muted);line-height:1.4}
+.progress{height:7px;background:#efeae1;border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
+.progress-caption{font-size:11.5px;color:var(--muted);margin:0 0 12px}
+.map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.map button{aspect-ratio:1;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:11.5px;color:var(--muted);padding:0;position:relative}
+.map button:hover{border-color:#c9bfae}
+.map button.done{background:var(--green-bg);border-color:#bcd6c5;color:var(--green);font-weight:700}
+.map button.wrong{background:var(--red-bg);border-color:#e3c3bb;color:var(--red);font-weight:700}
+.map button.mastered{background:var(--blue-bg);border-color:#c3d7e0;color:var(--blue);font-weight:700}
+.map button.current{outline:2px solid var(--ink);outline-offset:1px}
+.map button.star::after{content:"★";position:absolute;top:-2px;right:1px;font-size:8px;color:var(--gold)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}
+.legend .g{background:#bcd6c5}.legend .r{background:#e3c3bb}.legend .b{background:#c3d7e0}
+.save-label{font-size:11px;color:var(--muted);margin-top:12px}
+.save-label.error{color:var(--red)}
+.reset{width:100%;margin-top:8px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px;font-size:12px;color:var(--muted)}
+.reset:hover{border-color:var(--red);color:var(--red)}
+.main{min-width:0}
+.notes{background:var(--gold-bg);border:1px solid #efe0c4;border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:13px}
+.notes summary{cursor:pointer;font-weight:700;color:var(--gold);font-size:13px;list-style:none}
+.notes summary::-webkit-details-marker{display:none}
+.notes summary::before{content:"▸ ";font-size:11px}
+.notes[open] summary::before{content:"▾ "}
+.notes .notes-body{margin-top:10px;color:#5b554c;line-height:1.85}
+.notes .notes-body p{margin:0 0 6px}
+.notes .notes-body ul{margin:4px 0 8px 1.2em;padding:0}
+.notes .notes-body li{margin:3px 0;padding-left:2px}
+.notes .notes-body p:last-child{margin:0}
+.sol ul{margin:6px 0 8px 1.2em;padding:0}
+.sol li{margin:4px 0}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:12px;color:var(--muted)}
+.filter[aria-pressed="true"]{background:var(--gold-bg);border-color:#e2cda5;color:var(--gold);font-weight:700}
+.filter-count{font-size:12px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 30px;min-height:340px}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.badge{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--blue-bg);color:var(--blue);font-weight:700}
+.badge.pts{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(158,27,44,.18)}
+.badge.chap{background:#f2efe9;color:var(--muted)}
+.qid{font-size:12px;color:var(--muted);margin-left:auto}
+.star{background:none;border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:13px;color:#c9bfae}
+.star[aria-pressed="true"]{color:var(--gold);border-color:#e2cda5;background:var(--gold-bg)}
+.stem{font-size:16px;line-height:1.85;margin:0 0 18px;font-weight:600}
+.stem .sub{font-weight:400;color:var(--muted);font-size:13.5px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:11px;align-items:flex-start;text-align:left;background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:14px;line-height:1.7;width:100%}
+.opt:hover{border-color:#cfc7b8;background:#fdfcfa}
+.opt .k{flex:0 0 22px;height:22px;border-radius:6px;background:#f2efe9;color:var(--muted);display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+.opt.picked{border-color:var(--ink);background:#fbfaf7}
+.opt.correct{border-color:#9cc4ab;background:var(--green-bg)}
+.opt.correct .k{background:#bcd6c5;color:var(--green)}
+.opt.wrong{border-color:#e0bcb3;background:var(--red-bg)}
+.opt.wrong .k{background:#e3c3bb;color:var(--red)}
+.opt[disabled]{opacity:1}
+.judge{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fillrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.fillrow label{font-size:13.5px;color:var(--muted);min-width:100%}
+.fillrow input{border:1px solid var(--line);border-radius:9px;padding:9px 12px;width:190px;background:#fff}
+.fillrow input:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:10px;padding:9px 16px;font-size:13.5px}
+.btn:hover{background:#2b2926}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:#cfc7b8;background:#fbfaf7}
+.fb{margin-top:16px;border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.8}
+.fb.ok{background:var(--green-bg);border:1px solid #c9dece}
+.fb.no{background:var(--red-bg);border:1px solid #e6c8c0}
+.fb.info{background:var(--blue-bg);border:1px solid #c8dae2}
+.fb h3{margin:0 0 6px;font-size:13px;letter-spacing:.04em}
+.fb p{margin:0 0 6px}
+.fb p:last-child{margin:0}
+.sol{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;font-size:13.5px;color:#4d4842;line-height:1.85;display:none}
+.sol.show{display:block}
+.sol b{color:var(--gold)}
+.stem,.sol,.fb,.notes-body{overflow-wrap:break-word}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.pager .btn{display:inline-flex;align-items:center;gap:6px}
+@media(min-width:901px) and (max-width:1407px){.has-ai .pager{padding-right:104px}}
+.pos{font-size:12.5px;color:var(--muted)}
+.empty{padding:40px 10px;text-align:center;color:var(--muted);font-size:14px}
+@media(max-width:900px){
+  .layout{display:flex;flex-direction:column}
+  .main{order:1}
+  .sidebar{order:2;position:static}
+  .wrap{padding:20px 16px calc(84px + env(safe-area-inset-bottom))}
+  .card{padding:20px 18px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:thin}
+  .tab{flex:0 0 auto;white-space:nowrap}
+  .brand{font-size:14px}
+  .topnote{font-size:11px}
+  .pager{position:sticky;bottom:0;z-index:30;margin:14px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(250,249,246,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+  .pager .btn{min-height:44px}
+  .notes{overflow:hidden}
+}
+@media(max-width:520px){
+  .topnote{display:none}
+  .brand>span:last-child{font-size:13px}
+  .map{grid-template-columns:repeat(8,1fr)}
+  .judge{grid-template-columns:1fr}
+  .wrap{padding:16px 12px calc(80px + env(safe-area-inset-bottom))}
+  .card{padding:18px 14px;min-height:0}
+  .stem{font-size:15.5px;line-height:1.8}
+  .opt{padding:11px 12px}
+  .fillrow label{min-width:100%}
+  .fillrow input{width:100%}
+  .pager{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px}
+  .pager .btn{flex:1;justify-content:center;padding:11px 10px}
+  .notes{padding:12px 13px}
+  .panel{padding:14px}
+  .tabs{margin:14px -12px 16px;padding:0 12px 6px}
+  .qtop{gap:6px}
+  .qid{margin-left:0}
+}
+@media(max-width:360px){
+  .map{grid-template-columns:repeat(6,1fr)}
+  .wrap{padding:14px 10px calc(80px + env(safe-area-inset-bottom))}
+  .pager{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+  .tabs{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+}
+
+.m{font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;white-space:nowrap}
+.m .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .18em;font-size:.94em;line-height:1.18}
+.m .frac .fn{border-bottom:1px solid currentColor;padding:0 .18em}
+.m .frac .fd{padding:0 .18em}
+.m .sqrt .sq{border-top:1px solid currentColor;padding:0 .16em}
+.m .binom sub,.m .binom sup{font-size:.72em;vertical-align:baseline}
+.m .binom sup{vertical-align:super}
+.m .binom sub{vertical-align:-.25em}
+.m .ovl{text-decoration:overline}
+.m .acc,.eq .acc{text-decoration:overline;margin:0 .13em;padding:0}
+.cases{display:inline-flex;align-items:center;vertical-align:middle;margin:0 .25em}
+.cbrace{font-weight:300;line-height:.82;margin-right:.1em;transform:translateY(-.02em)}
+.crows{display:inline-grid;grid-template-columns:max-content max-content;column-gap:.95em;row-gap:.1em;text-align:left}
+.crow{display:contents}
+.crow .cl{text-align:right;white-space:nowrap}
+.crow .cr{text-align:left;white-space:nowrap}
+.eq .cases{font-size:1.02em}
+.m .up{font-style:normal}
+.m sup,.m sub{font-size:.72em}
+.notes .m{font-style:italic}
+.eqi{font-weight:400}
+.eq{display:block;text-align:center;margin:11px 0;font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;line-height:1.95;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+.eq .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .22em;line-height:1.2;font-size:.96em}
+.eq .frac .fn{border-bottom:1px solid currentColor;padding:0 .22em}
+.eq .frac .fd{padding:0 .22em}
+.eq sup,.eq sub{font-size:.72em}
+.eq .ovl{text-decoration:overline}
+@media(pointer:coarse){.fillrow input{font-size:16px}}
+</style>
+<style>
+/* AI 助教 · 前端直连版（无后端） */
+#ai-fab{position:fixed;right:24px;bottom:24px;z-index:60;display:inline-flex;align-items:center;gap:8px;
+  padding:11px 18px;border:none;border-radius:99px;cursor:pointer;font:inherit;font-size:13.5px;
+  background:var(--gold);color:#fff;box-shadow:0 8px 22px rgba(158,27,44,.28)}
+#ai-fab:hover{filter:brightness(1.06)}
+#ai-fab .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.85}
+#ai-fab.off{background:#8d8580;box-shadow:0 8px 22px rgba(36,31,30,.18)}
+
+#ai-panel{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;height:100dvh;z-index:70;display:none;
+  flex-direction:column;background:var(--surface);border-left:1px solid var(--line);
+  box-shadow:-12px 0 40px rgba(36,31,30,.14)}
+#ai-panel.open{display:flex}
+#ai-panel header{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--bg)}
+#ai-panel header strong{font-size:14px;letter-spacing:.02em}
+#ai-model{font:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);max-width:140px}
+#ai-gear{margin-left:auto;border:none;background:none;font-size:15px;line-height:1;color:var(--muted);cursor:pointer;padding:2px 4px}
+#ai-gear:hover{color:var(--ink)}
+#ai-close{border:none;background:none;font-size:20px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+#ai-close:hover{color:var(--ink)}
+#ai-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;background:var(--bg)}
+.ai-msg{max-width:96%;font-size:13.5px;line-height:1.72}
+.ai-msg.user{align-self:flex-end;background:var(--gold);color:#fff;padding:8px 12px;border-radius:12px 12px 3px 12px;white-space:pre-wrap}
+.ai-msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px 12px 12px 3px;padding:10px 13px}
+.ai-msg.bot p{margin:0 0 8px}
+.ai-msg.bot p:last-child{margin-bottom:0}
+.ai-msg.bot ul{margin:6px 0 6px 1.15em;padding:0}
+.ai-msg.bot code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:.92em}
+.ai-msg .eq{font-size:1.02em}
+.ai-msg .m{font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic}
+.ai-msg .up{font-style:normal}
+.ai-msg.err{border-color:#a33e32;color:#a33e32}
+.ai-reasoning{font-size:12px;color:var(--muted);border-left:3px solid var(--line);padding:4px 8px;margin-bottom:6px;white-space:pre-wrap;max-height:110px;overflow-y:auto}
+.ai-quick{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--line);flex-wrap:wrap;background:var(--surface)}
+.ai-quick button{font:inherit;font-size:12px;padding:4px 10px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--muted);cursor:pointer}
+.ai-quick button:hover{border-color:var(--gold);color:var(--gold)}
+.ai-inputrow{display:flex;gap:8px;align-items:flex-end;padding:10px 12px;background:var(--bg);border-top:1px solid var(--line)}
+#ai-input{flex:1;min-height:46px;max-height:120px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;
+  font:inherit;font-size:13.5px;resize:none;background:#fff;color:var(--ink)}
+#ai-send{white-space:nowrap}
+
+.aigrade{margin-top:10px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:8px;padding:10px 12px;background:var(--gold-bg)}
+.aigrade .hd{display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:4px}
+.aigrade .sc{font-weight:600;color:var(--gold)}
+.aigrade .mdl{font-size:11px;color:var(--muted);margin-left:auto}
+.aigrade p{margin:0;font-size:13px;line-height:1.7;color:var(--ink)}
+
+.solinput{margin:0 0 12px}
+.solinput label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.solinput textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:10px;
+  font:inherit;font-size:13.5px;line-height:1.7;background:#fff;color:var(--ink);resize:vertical;min-height:96px}
+.solinput textarea:focus{outline:none;border-color:var(--gold)}
+
+/* 设置弹窗 */
+#ai-setup{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(36,31,30,.38)}
+#ai-setup.open{display:flex}
+.ai-modal-box{width:min(460px,100%);background:var(--surface);border-radius:16px;padding:22px 22px 18px;box-shadow:0 24px 60px rgba(0,0,0,.24);max-height:92vh;overflow-y:auto}
+.ai-modal-box h3{margin:0 0 6px;font-size:17px}
+.ai-modal-box>p{margin:0 0 16px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.ai-field{display:block;margin-bottom:12px;font-size:12.5px;color:var(--muted)}
+.ai-field input{display:block;width:100%;box-sizing:border-box;margin-top:5px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:13.5px;background:#fff;color:var(--ink)}
+.ai-field input:focus{outline:none;border-color:var(--gold)}
+.ai-modal-box details{margin:2px 0 6px}
+.ai-modal-box summary{cursor:pointer;font-size:12px;color:var(--muted)}
+.ai-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:8px}
+.ai-modal-hint{margin:14px 0 0;font-size:12px;color:var(--muted);line-height:1.7;border-top:1px solid var(--line);padding-top:12px}
+.ai-modal-hint a{color:var(--blue)}
+.ai-err{color:var(--red);font-size:12px;margin:6px 0 0;display:none}
+
+@media (max-width:900px){
+  #ai-fab{right:16px;bottom:calc(80px + env(safe-area-inset-bottom))}
+}
+@media (max-width:721px){
+  #ai-fab{right:12px;bottom:calc(76px + env(safe-area-inset-bottom));padding:10px 14px}
+  #ai-panel{width:100vw;border-left:none}
+  #ai-panel header{padding-top:calc(12px + env(safe-area-inset-top))}
+  .ai-inputrow{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  #ai-setup{padding:12px;align-items:flex-start;overflow-y:auto}
+  .ai-modal-box{margin:auto;border-radius:14px;padding:18px 16px 14px}
+  .ai-msg{max-width:100%}
+  .ai-quick button{padding:6px 12px}
+  #ai-input,.solinput textarea,.ai-field input{font-size:16px}
+  #ai-close{padding:0 8px;font-size:24px}
+  #ai-gear{padding:4px 8px;font-size:17px}
+  #ai-model{max-width:120px}
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <div class="brand"><span class="brandmark">D</span><span>数据结构与算法 · 期末复习</span></div>
+  <div class="topnote">共 9 题</div>
+</header>
+
+<nav id="pack-tabs" class="tabs" aria-label="切换板块"></nav>
+
+<div class="layout">
+<aside class="sidebar">
+  <section class="panel">
+    <h2 id="pack-name">—</h2>
+    <p class="pack-subtitle" id="pack-subtitle"></p>
+    <div class="stats">
+      <div><div class="stat-number" id="done-number">0</div><div class="stat-label">已完成 / 本组题数</div></div>
+      <div><div class="stat-number" id="correct-number">0</div><div class="stat-label">客观题答对</div></div>
+    </div>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress-bar"></span></div>
+    <p class="progress-caption" id="progress-caption"></p>
+    <div id="question-map" class="map" aria-label="题号导航"></div>
+    <div class="legend"><span><i class="g"></i>答对</span><span><i class="r"></i>答错</span><span><i class="b"></i>主观已掌握</span></div>
+    <p id="storage-status" class="save-label"></p>
+    <button id="reset-all" class="reset" type="button">清空全部答题记录</button>
+  </section>
+</aside>
+
+<main class="main">
+  <details class="notes" id="pack-notes"><summary>知识点梳理</summary><div class="notes-body"></div></details>
+  <div class="toolbar">
+    <div class="filters" id="filters"></div>
+    <span id="filter-count" class="filter-count"></span>
+  </div>
+  <article id="question-card" class="card"></article>
+  <nav class="pager">
+    <button id="prev" class="btn ghost" type="button">← 上一题</button>
+    <span id="page-position" class="pos"></span>
+    <button id="next" class="btn" type="button">下一题 →</button>
+  </nav>
+</main>
+</div>
+</div>
+<div id="announcement" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></div>
+
+<script id="quiz-data" type="application/json">{"packs":[{"id":"A","head":"A","name":"绪论与复杂度","subtitle":"大 O 记号、常见量级、均摊分析","notes":"**大 O 只保留增长最快的项，并忽略常数因子。**\n\n- $O(1) < O(\\log n) < O(n) < O(n\\log n) < O(n^2) < O(2^n)$\n- 顺序表按下标访问是 $O(1)$，插入/删除平均 $O(n)$\n- 单链表插入/删除本身 $O(1)$，但定位到位置仍是 $O(n)$\n\n易错：$O(2n)$ 与 $O(n)$ 同阶；$O(n^2)$ 不一定比 $O(n\\log n)$ 慢，要看常数与规模。"},{"id":"B","head":"B","name":"线性表","subtitle":"顺序表、单链表、栈与队列","notes":"**线性表的核心是「逻辑相邻」与「物理相邻」是否一致。**\n\n- 顺序表：随机访问 $O(1)$，插入删除 $O(n)$\n- 单链表：按位置访问 $O(n)$，已知前驱时插入删除 $O(1)$\n- 头插法建表得到逆序，尾插法得到原序\n- 栈后进先出，队列先进先出；用两个栈可以模拟队列"},{"id":"C","head":"C","name":"树与 Huffman","subtitle":"二叉树性质、遍历、Huffman 编码","notes":"**二叉树常用性质**\n\n- 第 $i$ 层最多 $2^{i-1}$ 个结点\n- 高度为 $h$ 的二叉树最多 $2^h-1$ 个结点\n- 叶子数 $n_0$ 与度为 2 的结点数 $n_2$ 满足 $n_0=n_2+1$\n\n**Huffman 树**：每次取权值最小的两棵树合并，带权路径长度 $WPL=\\sum w_i l_i$ 最小。"},{"id":"D","head":"D","name":"图","subtitle":"存储、遍历、最短路","notes":"**图的两种基本存储**\n\n- 邻接矩阵：空间 $O(n^2)$，判断两点是否相邻 $O(1)$\n- 邻接表：空间 $O(n+e)$，适合稀疏图\n\n**遍历**：DFS 借助栈（或递归），BFS 借助队列；两者时间都是 $O(n+e)$。\n\n**最短路**：Dijkstra 适用于非负权，Floyd 求任意两点间最短路，$O(n^3)$。"}],"questions":[{"id":"A1","type":"choice","points":5,"stem":"下列关于算法复杂度的说法，正确的是：","options":[["A","$O(1)$ 表示算法执行时间为 0"],["B","$O(n)$ 与 $O(2n)$ 是同阶无穷大"],["C","$O(n^2)$ 在任何规模下都比 $O(n\\log n)$ 快"],["D","空间复杂度与输入规模无关"]],"answer":"B","solution":"**考点**：大 O 的常数因子可忽略。\n\n- A 错：$O(1)$ 指执行时间不随规模增长，不是 0。\n- B 对：$2n$ 与 $n$ 只差常数因子。\n- C 错：小规模时低阶项和常数可能占优，不能一概而论。\n- D 错：空间复杂度通常也随输入规模增长。","pack":"A"},{"id":"A2","type":"judge","points":4,"stem":"在长度为 $n$ 的顺序表中插入一个元素，平均需要移动约 $n/2$ 个元素。","answer":"对","solution":"**考点**：顺序表插入的期望移动次数。\n\n在 $n+1$ 个可插入位置中等概率选择，平均移动次数为 $\\frac{1}{n+1}\\sum_{i=1}^{n}(n-i+1)=\\frac{n}{2}$，因此时间复杂度为 $O(n)$。","pack":"A"},{"id":"B1","type":"fill","points":6,"stem":"用头插法把 $n$ 个结点依次插入单链表，建表的时间复杂度为 ____。","fields":[{"label":"时间复杂度","a":"O(n)","alt":["o(n)"]}],"solution":"**考点**：头插法每次都在表头插入，单次 $O(1)$。\n\n$n$ 次插入合计 $O(n)$。注意头插法得到的次序与输入相反。","pack":"B"},{"id":"B2","type":"choice","points":5,"stem":"元素依次以 1、2、3、4 入栈，入栈过程中允许出栈，则不可能得到的输出序列是：","options":[["A","1 2 3 4"],["B","4 3 2 1"],["C","3 1 2 4"],["D","2 3 4 1"]],"answer":"C","solution":"**考点**：栈的合法出栈序列。\n\nC 中 3 先出栈时，1、2 仍在栈内且 2 在 1 之上，接下来只能先出 2 再出 1，不可能先出 1。\n\n其余均可构造：B 全部入栈再出；D 入 1、2，出 2，入 3 出 3，入 4 出 4，出 1。","pack":"B"},{"id":"B3","type":"subjective","points":10,"stem":"写出将带头结点的单链表就地逆置的核心步骤，并给出时间复杂度与空间复杂度。","solution":"**评分点（共 10 分）**\n\n- 断开原链：把头结点的 next 置空，用指针 p 保存第一个数据结点（2 分）\n- 循环遍历：每步先用 q 暂存 p 的后继，再把 p 头插到表头（4 分）\n- 推进指针：p = q，直到 p 为空（2 分）\n- 复杂度：时间 $O(n)$，空间 $O(1)$（2 分）\n\n**易错**：不暂存后继会断链；忘记把原头结点 next 置空会形成环。","pack":"B"},{"id":"C1","type":"fill","points":5,"stem":"一棵有 15 个结点的满二叉树，其高度为 ____（根结点高度记为 1）。","fields":[{"label":"高度","a":"4","kind":"num"}],"solution":"**考点**：满二叉树结点数与高度的关系。\n\n$2^h-1=15$，解得 $h=4$。","pack":"C"},{"id":"C2","type":"subjective","points":10,"stem":"给定权值集合 $\\{1,2,3,4,5\\}$，构造 Huffman 树并求其带权路径长度 $WPL$。","solution":"**评分点（共 10 分）**\n\n- 合并顺序正确：$1+2=3$，$3+3=6$，$4+5=9$，$6+9=15$（4 分）\n- 画出或写出树形结构（3 分）\n- 各叶子深度：1、2 为 3 层；3、4、5 为 2 层（2 分）\n- $WPL=1\\times3+2\\times3+3\\times2+4\\times2+5\\times2=33$（1 分）\n\n**易错**：合并后要把新结点放回集合重新排序，不能按原顺序一路合并。","pack":"C"},{"id":"D1","type":"choice","points":5,"stem":"对图进行广度优先遍历时，通常借助的数据结构是：","options":[["A","栈"],["B","队列"],["C","优先队列"],["D","并查集"]],"answer":"B","solution":"**考点**：遍历与辅助结构。\n\nBFS 按层扩展，先访问的顶点先扩展，符合先进先出，用队列。DFS 用栈。","pack":"D"},{"id":"D2","type":"fill","points":6,"stem":"用邻接表存储含 $n$ 个顶点、$e$ 条边的无向图，所需空间为 ____（用 $n,e$ 表示）。","fields":[{"label":"空间复杂度","a":"O(n+e)","alt":["o(n+e)","O(n + e)"]}],"solution":"**考点**：邻接表的空间开销。\n\n顶点表 $n$ 项，每条边在无向图中出现两次，共 $2e$ 个边结点，合计 $O(n+e)$。","pack":"D"}]}</script>
+<script>
+'use strict';
+const DATA = JSON.parse(document.getElementById('quiz-data').textContent);
+const PACKS = DATA.packs, QS = DATA.questions;
+const KEY = 'quiz-review-demo-dsa';
+const FILTERS = [['all','全部'],['todo','未完成'],['wrong','错题'],['star','收藏']];
+const TYPE = {choice:'单项选择',judge:'判断',fill:'填空',subjective:'简答/计算'};
+const byId = new Map(QS.map(q => [q.id, q]));
+const $ = s => document.querySelector(s);
+const esc = v => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const state = {pack:(PACKS[0]||{id:'P1'}).id, filter:'all', current:null, rec:{}};
+
+const SYM = {
+  theta:'θ', lambda:'λ', mu:'μ', sigma:'σ', varphi:'φ', phi:'φ', Phi:'Φ', alpha:'α', beta:'β',
+  gamma:'γ', delta:'δ', Delta:'Δ', rho:'ρ', tau:'τ', chi:'χ', Omega:'Ω', omega:'ω', pi:'π',
+  varepsilon:'ε', epsilon:'ε', eta:'η', xi:'ξ', psi:'ψ',
+  infty:'∞', cdot:'·', times:'×', div:'÷', pm:'±', le:'≤', ge:'≥', ne:'≠', approx:'≈', equiv:'≡',
+  to:'→', rightarrow:'→', Rightarrow:'⇒', leftarrow:'←', in:'∈', notin:'∉', subset:'⊂', cup:'∪', cap:'∩',
+  emptyset:'∅', varnothing:'∅', forall:'∀', exists:'∃', therefore:'∴', because:'∵',
+  sum:'Σ', prod:'∏', int:'∫', partial:'∂', nabla:'∇', mid:'|',
+  bigcup:'∪', bigcap:'∩', bigoplus:'⊕', setminus:'∖', langle:'⟨', rangle:'⟩',
+  ln:'ln', log:'log', exp:'exp', max:'max', min:'min', sin:'sin', cos:'cos', tan:'tan',
+  ldots:'…', cdots:'…', dots:'…', prime:'′', circ:'∘', ast:'∗', star:'*',
+  Leftrightarrow:'⇔', leftrightarrow:'↔', Leftarrow:'⇐', Longleftrightarrow:'⟺',
+  iff:'⇔', implies:'⇒', mapsto:'↦', uparrow:'↑', downarrow:'↓',
+  wedge:'∧', vee:'∨', neg:'¬', oplus:'⊕', otimes:'⊗', propto:'∝',
+  leqslant:'≤', geqslant:'≥', ll:'≪', gg:'≫', mp:'∓',
+  subseteq:'⊆', supseteq:'⊇', supset:'⊃', perp:'⊥', parallel:'∥',
+  angle:'∠', triangle:'△', square:'□', bullet:'•', checkmark:'✓',
+  quad:'\u2003', qquad:'\u2003\u2003', ' ':' ', ',':'\u2009', ';':'\u2009', '!':''
+};
+function readGroup(s, i){
+  if(s[i] !== '{') return [s[i] || '', i + 1];
+  let depth = 0, start = i + 1;
+  for(let j = i; j < s.length; j++){
+    if(s[j] === '{') depth++;
+    else if(s[j] === '}'){
+      depth--;
+      if(depth === 0) return [s.slice(start, j), j + 1];
+    }
+  }
+  return [s.slice(start), s.length];
+}
+function readArg(src, i){
+  if(src[i] === '{') return readGroup(src, i);
+  if(src[i] === '\\'){
+    const mm = src.slice(i+1).match(/^[a-zA-Z]+/);
+    if(mm) return [src.slice(i, i+1+mm[0].length), i + 1 + mm[0].length];
+    return [src.slice(i, i+2), i + 2];
+  }
+  return [src[i] || '', i + 1];
+}
+function tex(src){
+  let out = '', i = 0;
+  while(i < src.length){
+    const c = src[i];
+    if(c === '\\'){
+      const m = src.slice(i+1).match(/^[a-zA-Z]+/);
+      const cmd = m ? m[0] : src[i+1];
+      let ni = i + 1 + (m ? m[0].length : 1);
+      if(m){ while(src[ni] === ' ') ni++; }
+      if(cmd === 'begin' && src.startsWith('{cases}', ni)){
+        const close = src.indexOf('\\end{cases}', ni + 7);
+        const body = close < 0 ? src.slice(ni + 7) : src.slice(ni + 7, close);
+        const rows = body.split('\\\\').map(r => r.trim()).filter(Boolean);
+        out += '<span class="cases"><span class="cbrace" style="font-size:' + (rows.length * 1.55) + 'em">{</span><span class="crows">' +
+          rows.map(r => {
+            const parts = r.split('&');
+            return '<span class="crow"><span class="cl">' + tex(parts[0] || '') + '</span><span class="cr">' +
+              tex(parts.slice(1).join('&')) + '</span></span>';
+          }).join('') + '</span></span>';
+        i = close < 0 ? src.length : close + '\\end{cases}'.length;
+      } else if(cmd === 'frac' || cmd === 'dfrac' || cmd === 'tfrac'){
+        const [a, na] = readArg(src, ni);
+        const [b, nb] = readArg(src, na);
+        out += `<span class="frac"><span class="fn">${tex(a)}</span><span class="fd">${tex(b)}</span></span>`;
+        i = nb;
+      } else if(cmd === 'bar'){
+        const [a, na] = readArg(src, ni);
+        out += `<span class="acc">${tex(a)}</span>`;
+        i = na;
+      } else if(cmd === 'overline' || cmd === 'hat' || cmd === 'tilde'){
+        const [a, na] = readArg(src, ni);
+        out += `<span class="ovl">${tex(a)}</span>`;
+        i = na;
+      } else if(cmd === 'mathrm' || cmd === 'text' || cmd === 'mathbf'){
+        const [a, na] = readGroup(src, ni);
+        out += `<span class="up">${esc(a)}</span>`;
+        i = na;
+      } else if(cmd === 'left' || cmd === 'right'){
+        i = ni;
+      } else if(cmd === '{' || cmd === '}'){
+        out += cmd; i = ni;
+      } else if(cmd === '\\'){
+        out += '<br>'; i = ni;
+      } else if(cmd === 'sqrt'){
+        const [a, na] = readArg(src, ni);
+        out += `<span class="sqrt">√<span class="sq">${tex(a)}</span></span>`;
+        i = na;
+      } else if(cmd === 'binom' || cmd === 'C'){
+        const [a, na] = readArg(src, ni);
+        const [b, nb] = readArg(src, na);
+        out += `<span class="binom">C<sub>${tex(a)}</sub><sup>${tex(b)}</sup></span>`;
+        i = nb;
+      } else if(cmd === 'big' || cmd === 'Big' || cmd === 'bigg' || cmd === 'Bigg' ||
+                cmd === 'bigl' || cmd === 'bigr' || cmd === 'Bigl' || cmd === 'Bigr' ||
+                cmd === 'biggl' || cmd === 'biggr' || cmd === 'Biggl' || cmd === 'Biggr'){
+        i = ni;
+      } else if(cmd === 'max' || cmd === 'min' || cmd === 'ln' || cmd === 'log' || cmd === 'exp' || cmd === 'lim' || cmd === 'sup' || cmd === 'inf'){
+        out += '<span class="up">' + cmd + '</span>'; i = ni;
+      } else if(SYM[cmd] !== undefined){
+        out += SYM[cmd];
+        i = ni;
+      } else {
+        out += cmd;
+        i = ni;
+      }
+    } else if(c === '^' || c === '_'){
+      const tag = c === '^' ? 'sup' : 'sub';
+      if(src[i+1] === '{'){
+        const [a, na] = readGroup(src, i+1);
+        out += `<${tag}>${tex(a)}</${tag}>`;
+        i = na;
+      } else {
+        out += `<${tag}>${tex(src[i+1] || '')}</${tag}>`;
+        i += 2;
+      }
+    } else if(c === '~'){ out += '\u00a0'; i++; }
+    else if(c === '<'){ out += '&lt;'; i++; }
+    else if(c === '>'){ out += '&gt;'; i++; }
+    else if(c === '&'){ out += '&amp;'; i++; }
+    else { out += c; i++; }
+  }
+  return out;
+}
+function inline(p){
+  const src = String(p);
+  return src.split(/\$\$([\s\S]*?)\$\$/).map((seg, i) => {
+    if(i % 2) return `<span class="eq eqi">${tex(seg)}</span>`;
+    return seg.split('$').map((s2, j) => j % 2 ? `<span class="m">${tex(s2)}</span>` : esc(s2)).join('');
+  }).join('')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
+}
+function paraHTML(block){
+  const lines = block.split('\n');
+  let html = '', buf = [], list = null;
+  const flushP = () => { if(buf.length){ html += '<p>' + buf.map(inline).join('<br>') + '</p>'; buf = []; } };
+  const flushL = () => { if(list){ html += '<ul style="margin:6px 0 6px 1.15em;padding:0">' + list.map(x => '<li>' + inline(x) + '</li>').join('') + '</ul>'; list = null; } };
+  for(const l of lines){
+    const t2 = l.trim();
+    if(/^[-•]\s+/.test(t2)){ flushP(); (list = list || []).push(t2.replace(/^[-•]\s+/, '')); }
+    else { flushL(); buf.push(l); }
+  }
+  flushP(); flushL();
+  return html;
+}
+function rich(t){
+  const src = String(t||'');
+  const parts = src.split(/\$\$([\s\S]*?)\$\$/);
+  return parts.map((seg, i) => {
+    if(i % 2) return '<div class="eq">' + tex(seg) + '</div>';
+    return seg.split(/\n\s*\n/).filter(Boolean).map(paraHTML).join('');
+  }).join('');
+}
+const SUB = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁻':'-','⁰':'0','¹':'1','²':'2','³':'3'};
+function norm(v){
+  return String(v).normalize('NFKC').replace(/[₀-₉⁻⁰¹²³]/g, c => SUB[c] || c)
+    .toLowerCase().replace(/[−–—]/g,'-').replace(/[×]/g,'*')
+    .replace(/[（]/g,'(').replace(/[）]/g,')').replace(/\s/g,'').replace(/[；;。，,]$/,'');
+}
+function toNum(n){
+  if(/^[+\-]?(\d+(\.\d*)?|\.\d+)(e[+\-]?\d+)?$/.test(n)) return Number(n);
+  const m = n.match(/^([+\-]?\d+(?:\.\d+)?)\/([+\-]?\d+(?:\.\d+)?)$/);
+  if(m) return Number(m[1]) / Number(m[2]);
+  return null;
+}
+function fieldOK(val, f){
+  if(!String(val).trim()) return false;
+  const n = norm(val);
+  if(f.kind === 'num'){
+    const x = toNum(n);
+    const pool = [f.a].concat(f.alt || []).map(v => toNum(norm(String(v)))).filter(v => v !== null);
+    if(x !== null && pool.some(v => Math.abs(x - v) < 1e-3)) return true;
+  }
+  return n === norm(f.a) || (f.alt||[]).some(x => norm(x) === n);
+}
+
+function rec(id){
+  if(!state.rec[id]) state.rec[id] = {picked:null, correct:null, draft:[], mastered:false, starred:false, tried:false, revealed:false};
+  return state.rec[id];
+}
+function done(q){
+  const r = rec(q.id);
+  return q.type === 'subjective' ? r.mastered : r.correct !== null;
+}
+function save(){
+  const el = $('#storage-status');
+  try{
+    localStorage.setItem(KEY, JSON.stringify({v:1, pack:state.pack, filter:state.filter, current:state.current, rec:state.rec}));
+    if(el){ el.textContent = '已保存'; el.classList.remove('error'); }
+  }catch(e){
+    if(el){ el.textContent = '无法保存进度'; el.classList.add('error'); }
+  }
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved.v !== 1 || !saved.rec) return;
+    state.rec = saved.rec;
+    if(PACKS.some(p2 => p2.id === saved.pack)) state.pack = saved.pack;
+    if(FILTERS.some(f => f[0] === saved.filter)) state.filter = saved.filter;
+    if(byId.has(saved.current)) state.current = saved.current;
+  }catch(e){}
+}
+function inPack(){ return QS.filter(q => q.pack === state.pack); }
+function list(){
+  return inPack().filter(q => {
+    const r = rec(q.id);
+    if(state.filter === 'todo') return !done(q);
+    if(state.filter === 'wrong') return r.correct === false;
+    if(state.filter === 'star') return r.starred;
+    return true;
+  });
+}
+
+function tabs(){
+  $('#pack-tabs').innerHTML = PACKS.map(p =>
+    `<button class="tab" role="tab" data-pack="${p.id}" aria-selected="${p.id===state.pack}">${p.head ? esc(p.head) + ' ' : ''}${esc(p.name)}</button>`
+  ).join('');
+  $('#pack-tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => {
+    state.pack = b.dataset.pack; state.filter = 'all';
+    const first = list()[0]; if(first) state.current = first.id;
+    render(); save();
+  });
+}
+function filters(){
+  $('#filters').innerHTML = FILTERS.map(([id,label]) =>
+    `<button class="filter" data-f="${id}" aria-pressed="${id===state.filter}">${label}</button>`
+  ).join('');
+  $('#filters').querySelectorAll('.filter').forEach(b => b.onclick = () => {
+    state.filter = b.dataset.f;
+    const l = list(); if(l.length && !l.some(q=>q.id===state.current)) state.current = l[0].id;
+    render(); save();
+  });
+}
+function sidebar(){
+  const p = PACKS.find(x=>x.id===state.pack) || PACKS[0];
+  const all = inPack();
+  const doneN = all.filter(done).length;
+  const rightN = all.filter(q=>q.type!=='subjective' && rec(q.id).correct===true).length;
+  $('#pack-name').textContent = (p.head ? p.head + ' · ' : '') + p.name;
+  const sub = $('#pack-subtitle');
+  sub.textContent = p.subtitle || '';
+  sub.style.display = p.subtitle ? '' : 'none';
+  $('#done-number').textContent = doneN;
+  $('#correct-number').textContent = rightN;
+  const pct = all.length ? Math.round(doneN/all.length*100) : 0;
+  $('#progress-bar').style.width = pct + '%';
+  $('.progress').setAttribute('aria-valuenow', pct);
+  $('#progress-caption').textContent = all.length ? `完成 ${doneN}/${all.length} 题（${pct}%）` : '';
+  $('#question-map').innerHTML = all.map((q,i) => {
+    const r = rec(q.id);
+    let cls = '';
+    if(q.type==='subjective'){ if(r.mastered) cls='mastered'; }
+    else if(r.correct===true) cls='done';
+    else if(r.correct===false) cls='wrong';
+    if(r.starred) cls += ' star';
+    if(q.id===state.current) cls += ' current';
+    return `<button class="${cls}" data-q="${q.id}" title="${esc(q.id)}">${i+1}</button>`;
+  }).join('');
+  $('#question-map').querySelectorAll('button').forEach(b => b.onclick = () => { state.current = b.dataset.q; render(); save(); });
+  const notesBox = $('#pack-notes');
+  notesBox.style.display = p.notes ? '' : 'none';
+  notesBox.querySelector('.notes-body').innerHTML = rich(p.notes || '');
+  const l = list();
+  $('#filter-count').textContent = `${l.length} 题`;
+}
+
+function render(){
+  tabs(); filters(); sidebar();
+  const l = list();
+  const q = byId.get(state.current);
+  const card = $('#question-card');
+  if(!q){ card.innerHTML = '<div class="empty">这个筛选条件下没有题目。</div>'; $('#page-position').textContent=''; return; }
+  const idx = l.findIndex(x=>x.id===q.id);
+  $('#page-position').textContent = idx >= 0 ? `本组第 ${idx+1} / ${l.length} 题` : '';
+  const r = rec(q.id);
+  const p = PACKS.find(x=>x.id===q.pack);
+  let body = '';
+  if(q.type==='choice' || q.type==='judge'){
+    const opts = q.type==='judge' ? [['对','正确'],['错','错误']] : q.options;
+    body = `<div class="opts ${q.type==='judge'?'judge':''}">` + opts.map(([k,t]) => {
+      let cls = '';
+      if(r.picked){ if(k===q.answer) cls='correct'; else if(k===r.picked) cls='wrong'; }
+      return `<button class="opt ${cls}" data-pick="${k}" ${r.picked?'disabled':''}><span class="k">${esc(k)}</span><span>${inline(t)}</span></button>`;
+    }).join('') + '</div>';
+  } else if(q.type==='fill'){
+    body = q.fields.map((f,i) => `<div class="fillrow"><label>${inline(f.label || ('第 '+(i+1)+' 空'))}</label>
+      <input type="text" data-fill="${i}" value="${esc((r.draft||[])[i]||'')}" placeholder="填答案" autocomplete="off"></div>`).join('')
+      + `<div class="actions"><button class="btn" data-submit="1">提交核对</button><button class="btn ghost" data-clear="1">重填</button></div>`;
+  } else {
+    body = `<div class="actions"><button class="btn ghost" data-reveal="1">${r.mastered?'再看一遍参考答案':'查看参考答案与步骤'}</button>
+      <button class="btn" data-master="1">${r.mastered?'✔ 已标记掌握（点击取消）':'我看懂了，标记为已掌握'}</button></div>`;
+  }
+  card.innerHTML = `
+    <div class="qtop">
+      <span class="badge">${TYPE[q.type] || esc(q.type)}</span>
+      <span class="badge chap">${p ? esc((p.head ? p.head+' ' : '') + p.name) : ''}</span>
+      ${q.points?`<span class="badge pts">${esc(q.points)} 分</span>`:''}
+      <span class="qid">${esc(q.id)}</span>
+      <button class="star" aria-pressed="${!!r.starred}" data-star="1" title="收藏本题">★</button>
+    </div>
+    <h2 class="stem">${inline(q.stem)}${q.note?`<div class="sub">${inline(q.note)}</div>`:''}</h2>
+    ${body}
+    <div id="feedback"></div>
+    <div class="sol ${r.revealed?'show':''}" id="solution"><b>参考答案与解析：</b><br>${rich(q.solution||'')}</div>
+  `;
+  wire(q, r);
+  $('#prev').disabled = idx <= 0;
+  $('#next').disabled = idx < 0 || idx >= l.length-1;
+}
+
+function feedback(kind, html){
+  const box = $('#feedback'); if(!box) return;
+  box.className = 'fb ' + kind;
+  box.innerHTML = html;
+}
+function wire(q, r){
+  const card = $('#question-card');
+  card.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
+    if(r.picked) return;
+    r.picked = b.dataset.pick; r.tried = true;
+    r.correct = r.picked === q.answer;
+    render(); save();
+    const right = q.answer === r.picked;
+    feedback(right?'ok':'no', `<h3>${right?'答对了':'答错了'}</h3><p>正确答案：<b>${esc(q.answer)}</b></p>`);
+    $('#solution').classList.add('show'); r.revealed = true;
+    $('#feedback').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  card.querySelectorAll('[data-fill]').forEach(inp => inp.oninput = () => {
+    r.draft = r.draft || []; r.draft[+inp.dataset.fill] = inp.value;
+  });
+  const sub = card.querySelector('[data-submit]');
+  if(sub) sub.onclick = () => {
+    const vals = q.fields.map((f,i)=>(r.draft||[])[i]||'');
+    if(vals.some(v=>!String(v).trim())){ feedback('info','<p>先把空填完再提交。</p>'); return; }
+    const okAll = q.fields.every((f,i)=>fieldOK(vals[i], f));
+    r.correct = okAll; r.tried = true;
+    render(); save();
+    feedback(okAll?'ok':'no', okAll
+      ? '<h3>全部正确</h3>'
+      : `<h3>有空格不对</h3><p>参考答案：<b>${q.fields.map((f,i)=>`(${i+1}) ${esc(f.a)}`).join('；')}</b></p>`);
+    $('#solution').classList.add('show');
+  };
+  const clr = card.querySelector('[data-clear]');
+  if(clr) clr.onclick = () => { r.draft=[]; r.correct=null; render(); save(); };
+  const rev = card.querySelector('[data-reveal]');
+  if(rev) rev.onclick = () => { r.revealed = true; $('#solution').classList.add('show'); };
+  const mas = card.querySelector('[data-master]');
+  if(mas) mas.onclick = () => { r.mastered = !r.mastered; render(); save(); };
+  const star = card.querySelector('[data-star]');
+  if(star) star.onclick = () => { r.starred = !r.starred; render(); save(); };
+  if(q.type==='choice' || q.type==='judge'){
+    if(r.picked){
+      const right = r.picked === q.answer;
+      feedback(right?'ok':'no', `<h3>${right?'答对了':'答错了'}</h3><p>正确答案：<b>${esc(q.answer)}</b></p>`);
+      $('#solution').classList.add('show');
+    }
+  }
+  if(q.type==='fill' && r.correct !== null){
+    feedback(r.correct?'ok':'no', r.correct ? '<h3>全部正确</h3>' : `<h3>有空格不对</h3><p>参考答案：<b>${q.fields.map((f,i)=>`(${i+1}) ${esc(f.a)}`).join('；')}</b></p>`);
+    $('#solution').classList.add('show');
+  }
+}
+function go(step){
+  const l = list(); const i = l.findIndex(x=>x.id===state.current);
+  const nx = l[i+step]; if(!nx) return;
+  state.current = nx.id; render(); save(); window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#prev').onclick = () => go(-1);
+$('#next').onclick = () => go(1);
+$('#reset-all').onclick = () => {
+  if(!confirm('确定清空所有答题记录吗？此操作不可撤销。')) return;
+  state.rec = {}; state.current = inPack()[0]?.id || state.current;
+  render(); save();
+  $('#storage-status').textContent = '记录已清空';
+};
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if(e.key === 'ArrowLeft') go(-1);
+  if(e.key === 'ArrowRight') go(1);
+});
+load();
+if(!PACKS.some(p=>p.id===state.pack)) state.pack = PACKS[0].id;
+if(!byId.has(state.current)){
+  const first = QS.find(q=>q.pack===state.pack);
+  if(first) state.current = first.id;
+}
+render();
+</script>
+<script>window.QUIZ_AI = {"course": "数据结构与算法 · 期末复习"};</script>
+<script>
+/* AI 助教 · 纯前端直连 OpenAI 兼容接口
+   配置只写入本浏览器 localStorage，不经过任何第三方服务器。 */
+(function () {
+  'use strict';
+
+  var CFG_KEY = 'quiz-ai-config-v1';
+  var SKIP_KEY = 'quiz-ai-setup-skipped-v1';
+  var DEFAULT_BASE = 'https://api.deepseek.com';
+  var DEFAULT_MODEL = 'deepseek-flash';
+  var COURSE = (window.QUIZ_AI && window.QUIZ_AI.course) || '本课程';
+  var aiCfg = { baseUrl: DEFAULT_BASE, apiKey: '', model: DEFAULT_MODEL };
+
+  try {
+    var savedCfg = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
+    if (savedCfg.baseUrl) aiCfg.baseUrl = savedCfg.baseUrl;
+    if (savedCfg.apiKey) aiCfg.apiKey = savedCfg.apiKey;
+    if (savedCfg.model) aiCfg.model = savedCfg.model;
+  } catch (e) {}
+
+  function persistCfg() {
+    try { localStorage.setItem(CFG_KEY, JSON.stringify(aiCfg)); } catch (e) {}
+  }
+
+  var toastTimer = null;
+  function toast(msg, ms) {
+    var el = document.getElementById('ai-toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'ai-toast';
+      el.style.cssText = 'position:fixed;left:50%;bottom:104px;transform:translateX(-50%);z-index:95;pointer-events:none;' +
+        'background:rgba(36,31,30,.92);color:#fff;font-size:13px;padding:10px 16px;border-radius:10px;' +
+        'max-width:min(90vw,480px);line-height:1.6;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:opacity .25s';
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.style.display = 'block';
+    el.style.opacity = '1';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      el.style.opacity = '0';
+      setTimeout(function () { el.style.display = 'none'; }, 260);
+    }, ms || 2600);
+  }
+
+  /* ---------- 接口地址与请求 ---------- */
+  function apiUrl(base) {
+    var b = String(base || DEFAULT_BASE).trim().replace(/\/+$/, '');
+    if (/\/chat\/completions$/.test(b)) return b;
+    if (/\/v1$/.test(b)) return b + '/chat/completions';
+    return b + '/v1/chat/completions';
+  }
+
+  function httpError(status, text) {
+    var msg = '';
+    try {
+      var o = JSON.parse(text);
+      msg = (o.error && (o.error.message || o.error)) || o.message || '';
+    } catch (e) {
+      msg = String(text || '').slice(0, 160);
+    }
+    return 'HTTP ' + status + (msg ? '：' + msg : '');
+  }
+
+  function chat(messages, opts) {
+    opts = opts || {};
+    var body = {
+      model: aiCfg.model || DEFAULT_MODEL,
+      messages: messages,
+      temperature: opts.temperature === undefined ? 0.3 : opts.temperature,
+      max_tokens: opts.max_tokens || 2000,
+      stream: !!opts.onDelta
+    };
+    return fetch(apiUrl(aiCfg.baseUrl), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + aiCfg.apiKey
+      },
+      body: JSON.stringify(body)
+    }).then(function (res) {
+      if (!res.ok) {
+        return res.text().then(function (t) { throw new Error(httpError(res.status, t)); });
+      }
+      if (!opts.onDelta || !res.body || !res.body.getReader) {
+        return res.json().then(function (data) {
+          var m = (data.choices && data.choices[0] && data.choices[0].message) || {};
+          return { text: m.content || '', reasoning: m.reasoning_content || '' };
+        });
+      }
+      var acc = { text: '', reasoning: '' };
+      var reader = res.body.getReader();
+      var dec = new TextDecoder('utf-8');
+      var buf = '';
+      function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) return;
+          buf += dec.decode(r.value, { stream: true });
+          var idx;
+          while ((idx = buf.indexOf('\n')) >= 0) {
+            var line = buf.slice(0, idx).trim();
+            buf = buf.slice(idx + 1);
+            if (line.indexOf('data:') !== 0) continue;
+            var payload = line.slice(5).trim();
+            if (!payload || payload === '[DONE]') continue;
+            var obj;
+            try { obj = JSON.parse(payload); } catch (e) { continue; }
+            var d = (obj.choices && obj.choices[0] && obj.choices[0].delta) || {};
+            if (d.reasoning_content) {
+              acc.reasoning += d.reasoning_content;
+              opts.onDelta('reasoning', d.reasoning_content);
+            }
+            if (d.content) {
+              acc.text += d.content;
+              opts.onDelta('content', d.content);
+            }
+          }
+          return pump();
+        });
+      }
+      return pump().then(function () { return acc; });
+    }).catch(function (e) {
+      if (e && e.name === 'TypeError') {
+        throw new Error('连不上这个地址。检查 Base URL 是否写对、网络是否可用；若服务商不允许浏览器直连，会报 CORS 错误。');
+      }
+      throw e;
+    });
+  }
+
+  function extractJson(text) {
+    var start = text.indexOf('{');
+    if (start < 0) throw new Error('模型没有返回 JSON');
+    var depth = 0;
+    for (var i = start; i < text.length; i++) {
+      if (text[i] === '{') depth++;
+      else if (text[i] === '}') {
+        depth--;
+        if (depth === 0) return JSON.parse(text.slice(start, i + 1));
+      }
+    }
+    throw new Error('模型返回的 JSON 不完整');
+  }
+
+  /* ---------- 设置弹窗 ---------- */
+  function buildSetup() {
+    if (document.getElementById('ai-setup')) return;
+    var box = document.createElement('div');
+    box.id = 'ai-setup';
+    box.innerHTML =
+      '<div class="ai-modal-box" role="dialog" aria-modal="true" aria-labelledby="ai-setup-title">' +
+      '<h3 id="ai-setup-title">启用 AI 助教</h3>' +
+      '<p>填入你自己的 API Key。Key 只保存在本浏览器，请求直接发给你填的服务商，不经过任何中转。</p>' +
+      '<label class="ai-field">Base URL<input id="ai-cfg-base" type="text" spellcheck="false" placeholder="' + DEFAULT_BASE + '"></label>' +
+      '<label class="ai-field">API Key<input id="ai-cfg-key" type="password" spellcheck="false" placeholder="sk-..."></label>' +
+      '<details><summary>高级：模型名</summary>' +
+      '<label class="ai-field"><input id="ai-cfg-model" type="text" spellcheck="false" placeholder="' + DEFAULT_MODEL + '"></label>' +
+      '</details>' +
+      '<p class="ai-err" id="ai-cfg-err"></p>' +
+      '<div class="ai-modal-actions">' +
+      '<button class="btn ghost" type="button" id="ai-cfg-cancel">稍后再说</button>' +
+      '<button class="btn" type="button" id="ai-cfg-save">保存并启用</button>' +
+      '</div>' +
+      '<p class="ai-modal-hint">还没有 Key？<a href="https://platform.deepseek.com/" target="_blank" rel="noopener">去 DeepSeek 开放平台获取</a>，充值少量金额即可使用；填好后把 Base URL 保持默认即可。</p>' +
+      '</div>';
+    document.body.appendChild(box);
+
+    box.addEventListener('click', function (e) { if (e.target === box) closeSetup(true); });
+    document.getElementById('ai-cfg-cancel').addEventListener('click', function () { closeSetup(true); });
+    document.getElementById('ai-cfg-save').addEventListener('click', saveSetup);
+    document.getElementById('ai-cfg-key').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') saveSetup();
+    });
+  }
+
+  function openSetup() {
+    buildSetup();
+    document.getElementById('ai-cfg-base').value = aiCfg.baseUrl || DEFAULT_BASE;
+    document.getElementById('ai-cfg-key').value = aiCfg.apiKey || '';
+    document.getElementById('ai-cfg-model').value = aiCfg.model || DEFAULT_MODEL;
+    var err = document.getElementById('ai-cfg-err');
+    err.style.display = 'none';
+    document.getElementById('ai-setup').classList.add('open');
+    setTimeout(function () { document.getElementById('ai-cfg-key').focus(); }, 60);
+  }
+
+  function closeSetup(skipped) {
+    var el = document.getElementById('ai-setup');
+    if (el) el.classList.remove('open');
+    if (skipped) {
+      try { localStorage.setItem(SKIP_KEY, '1'); } catch (e) {}
+    }
+  }
+
+  function saveSetup() {
+    var base = document.getElementById('ai-cfg-base').value.trim() || DEFAULT_BASE;
+    var key = document.getElementById('ai-cfg-key').value.trim();
+    var model = document.getElementById('ai-cfg-model').value.trim() || DEFAULT_MODEL;
+    if (!key) {
+      var err = document.getElementById('ai-cfg-err');
+      err.textContent = '请填 API Key。';
+      err.style.display = 'block';
+      return;
+    }
+    aiCfg.baseUrl = base;
+    aiCfg.apiKey = key;
+    aiCfg.model = model;
+    persistCfg();
+    closeSetup(false);
+    syncModelSelect();
+    updateFab();
+    toast('AI 助教已启用');
+    if (panel && panel.classList.contains('open') && !msgs.length) greet();
+  }
+
+  function updateFab() {
+    var fab = document.getElementById('ai-fab');
+    if (fab) fab.classList.toggle('off', !aiCfg.apiKey);
+  }
+
+  function ensureCfg() {
+    if (aiCfg.apiKey) return true;
+    openSetup();
+    toast('先填入 API Key 才能使用 AI 助教');
+    return false;
+  }
+
+  /* ---------- 主观题：作答框与 AI 判卷 ---------- */
+  function afterRender() {
+    var q = byId.get(state.current);
+    if (!q || q.type !== 'subjective') return;
+    var card = document.getElementById('question-card');
+    if (!card) return;
+    var actions = card.querySelector('.actions');
+    if (actions && !card.querySelector('[data-sol]')) {
+      var r = rec(q.id);
+      var box = document.createElement('div');
+      box.className = 'solinput';
+      box.innerHTML = '<label>我的作答 <span>（写完可让 AI 按评分点判卷）</span></label>' +
+        '<textarea data-sol rows="4" placeholder="写清思路、公式、代入与结论"></textarea>';
+      card.insertBefore(box, actions);
+      var ta = box.querySelector('textarea');
+      ta.value = r.sol || '';
+      ta.addEventListener('input', function () { r.sol = ta.value; save(); });
+
+      var gbtn = document.createElement('button');
+      gbtn.className = 'btn ghost';
+      gbtn.type = 'button';
+      gbtn.setAttribute('data-aigrade', '1');
+      gbtn.textContent = 'AI 判卷';
+      gbtn.addEventListener('click', function (e) { e.preventDefault(); doGrade(); });
+      actions.appendChild(gbtn);
+    }
+    var grade = rec(q.id).aiGrade;
+    if (grade && !document.getElementById('aigrade-box')) {
+      var sol = document.getElementById('solution');
+      if (sol) {
+        var div = document.createElement('div');
+        div.className = 'aigrade';
+        div.id = 'aigrade-box';
+        div.innerHTML = '<div class="hd"><b>AI 判卷</b><span class="sc">' + esc(grade.score) + ' / ' + esc(grade.max) +
+          '</span><span class="mdl">' + esc(grade.model || '') + '</span></div><p>' + esc(grade.comment || '') + '</p>';
+        sol.parentNode.insertBefore(div, sol);
+      }
+    }
+  }
+
+  var GRADE_SYS = '你是《' + COURSE + '》的助教，给简答与计算题判卷。你会得到题目、参考答案（含评分点）与学生作答。' +
+    '按评分点给分：关键步骤（列公式、代入、化简、结论）到位才给分；只写答案没有过程最多给一半分；' +
+    '思路正确但符号或计算小错扣 1~2 分，不判全错；空白或完全跑题给 0 分。' +
+    '满分取题目给出的分值，未给出按 10 分。只输出一个 JSON 对象，不要输出其他文字：' +
+    '{"score": <整数>, "max": <整数>, "comment": "<2~3 句中文点评：先肯定做对的，再指出漏了或错了什么>"}';
+
+  function doGrade() {
+    var q = byId.get(state.current);
+    if (!q) return;
+    var r = rec(q.id);
+    var ans = (r.sol || '').trim();
+    if (!ans) { toast('先写下作答，再让 AI 判卷'); return; }
+    if (!ensureCfg()) return;
+    var btn = document.querySelector('[data-aigrade]');
+    if (btn) { btn.disabled = true; btn.textContent = '判卷中…'; }
+    var userMsg = '【题目】\n' + q.stem +
+      (q.points ? '\n（本题 ' + q.points + ' 分）' : '') +
+      '\n\n【参考答案与评分点】\n' + (q.solution || '') +
+      '\n\n【学生作答】\n' + ans + '\n\n只输出 JSON。';
+    chat([{ role: 'system', content: GRADE_SYS }, { role: 'user', content: userMsg }],
+      { temperature: 0.1, max_tokens: 900 })
+      .then(function (out) {
+        var obj = extractJson(out.text);
+        var max = Math.max(1, Math.round(Number(obj.max) || Number(q.points) || 10));
+        var score = Math.max(0, Math.min(max, Math.round(Number(obj.score) || 0)));
+        r.aiGrade = { score: score, max: max, comment: String(obj.comment || ''), model: aiCfg.model };
+        r.revealed = true;
+        save(); render();
+        toast('AI 判卷完成：' + score + ' / ' + max);
+      })
+      .catch(function (e) {
+        toast('判卷失败：' + e.message, 4200);
+        if (btn) { btn.disabled = false; btn.textContent = 'AI 判卷'; }
+      });
+  }
+
+  /* ---------- 面板 ---------- */
+  var panel = null;
+  var msgs = [];
+  var streaming = false;
+
+  function buildPanel() {
+    if (document.getElementById('ai-panel')) return;
+    var fab = document.createElement('button');
+    fab.id = 'ai-fab';
+    fab.type = 'button';
+    fab.title = 'AI 助教';
+    fab.innerHTML = '<span class="dot"></span>AI 助教';
+    document.body.appendChild(fab);
+    updateFab();
+
+    panel = document.createElement('aside');
+    panel.id = 'ai-panel';
+    panel.innerHTML =
+      '<header><strong>AI 助教</strong>' +
+      '<select id="ai-model" aria-label="选择模型"></select>' +
+      '<button id="ai-gear" type="button" title="API 设置">⚙</button>' +
+      '<button id="ai-close" type="button" aria-label="关闭">×</button></header>' +
+      '<div id="ai-msgs"></div>' +
+      '<div class="ai-quick">' +
+      '<button type="button" data-q="这题的解题思路是什么？先别直接给答案">思路</button>' +
+      '<button type="button" data-q="这道题最容易错在哪一步？">易错点</button>' +
+      '<button type="button" data-q="用更基础的方式再讲一遍。">讲慢点</button>' +
+      '<button type="button" data-q="给我一道同类型的新题，先不要给答案，等我做完再批改。">同类题</button>' +
+      '</div>' +
+      '<div class="ai-inputrow"><textarea id="ai-input" rows="1" placeholder="问 AI 助教…（Enter 发送）"></textarea>' +
+      '<button class="btn" id="ai-send" type="button">发送</button></div>';
+    document.body.appendChild(panel);
+
+    fab.addEventListener('click', function () {
+      if (!aiCfg.apiKey) { openSetup(); return; }
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open')) {
+        if (!msgs.length) greet();
+        document.getElementById('ai-input').focus();
+      }
+    });
+    document.getElementById('ai-close').addEventListener('click', function () { panel.classList.remove('open'); });
+    document.getElementById('ai-gear').addEventListener('click', openSetup);
+    document.getElementById('ai-model').addEventListener('change', function (e) {
+      aiCfg.model = e.target.value;
+      persistCfg();
+      toast('已切换模型：' + aiCfg.model);
+    });
+    document.getElementById('ai-send').addEventListener('click', sendAsk);
+    document.getElementById('ai-input').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAsk(); }
+    });
+    panel.querySelectorAll('.ai-quick button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (!ensureCfg()) return;
+        document.getElementById('ai-input').value = b.dataset.q;
+        sendAsk();
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') panel.classList.remove('open');
+    });
+    syncModelSelect();
+  }
+
+  function syncModelSelect() {
+    var sel = document.getElementById('ai-model');
+    if (!sel) return;
+    var list = ['deepseek-flash', 'deepseek-chat', 'deepseek-reasoner'];
+    if (list.indexOf(aiCfg.model) < 0) list.unshift(aiCfg.model);
+    sel.innerHTML = list.map(function (m) {
+      return '<option value="' + esc(m) + '"' + (m === aiCfg.model ? ' selected' : '') + '>' + esc(m) + '</option>';
+    }).join('');
+  }
+
+  function greet() {
+    var q = byId.get(state.current);
+    msgs.push({
+      role: 'assistant',
+      text: '我是这门课的 AI 助教。当前题目 **' + (q ? q.id : '—') + '**，可以问思路、易错点，也可以让我给主观题判卷。'
+    });
+    paint();
+  }
+
+  function paint() {
+    var box = document.getElementById('ai-msgs');
+    if (!box) return;
+    box.innerHTML = '';
+    msgs.forEach(function (m) {
+      var d = document.createElement('div');
+      if (m.role === 'user') {
+        d.className = 'ai-msg user';
+        d.textContent = m.text;
+      } else {
+        d.className = 'ai-msg bot' + (m.err ? ' err' : '');
+        var html = '';
+        if (m.reasoning) html += '<div class="ai-reasoning">' + esc(m.reasoning) + '</div>';
+        html += (m.text ? rich(m.text) : '<span style="color:var(--muted)">正在思考…</span>');
+        d.innerHTML = html;
+      }
+      box.appendChild(d);
+    });
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function ctxOf() {
+    var q = byId.get(state.current);
+    if (!q) return {};
+    var r = rec(q.id);
+    var opts = (q.options || []).map(function (o) { return o[0] + '. ' + o[1]; }).join('\n');
+    var mine = (q.type === 'choice' || q.type === 'judge') ? (r.picked || '') :
+      q.type === 'fill' ? ((r.draft || []).join(' | ')) : (r.sol || '');
+    var notesEl = document.querySelector('.notes-body');
+    return {
+      qid: q.id, stem: q.stem, options: opts,
+      notes: notesEl ? notesEl.innerText.slice(0, 1500) : '',
+      myAnswer: mine, explanation: q.solution || ''
+    };
+  }
+
+  var ASK_SYS = '你是《' + COURSE + '》的 AI 助教，面向正在复习备考的学生。' +
+    '先给结论，再给推导；推导要写清每一步依据（用了哪条定义、公式或定理）；' +
+    '涉及计算时列出中间结果，不要跳步；学生答错时先指出错在哪一步、为什么会错，再给正确做法。' +
+    '公式行内用 $...$，独立成行用 $$...$$，可用 \\frac \\sqrt \\int \\sum \\lim 等；不要用 Markdown 表格。' +
+    '不要寒暄，不要复述题目。';
+
+  function sendAsk() {
+    if (streaming) return;
+    if (!ensureCfg()) return;
+    var input = document.getElementById('ai-input');
+    var text = (input.value || '').trim();
+    if (!text) return;
+    input.value = '';
+    msgs.push({ role: 'user', text: text });
+    var bot = { role: 'assistant', text: '', reasoning: '' };
+    msgs.push(bot);
+    paint();
+    streaming = true;
+    var sendBtn = document.getElementById('ai-send');
+    sendBtn.disabled = true;
+
+    var ctx = ctxOf();
+    var parts = [];
+    if (ctx.qid) parts.push('【当前题目编号】' + ctx.qid);
+    if (ctx.stem) parts.push('【题目原文】\n' + ctx.stem);
+    if (ctx.options) parts.push('【选项】\n' + ctx.options);
+    if (ctx.notes) parts.push('【本板块知识点】\n' + ctx.notes);
+    if (ctx.myAnswer) parts.push('【我的作答】\n' + ctx.myAnswer);
+    if (ctx.explanation) parts.push('【参考答案（讲解时先引导思路，再给答案）】\n' + ctx.explanation);
+
+    var messages = [{ role: 'system', content: ASK_SYS }];
+    if (parts.length) {
+      messages.push({ role: 'user', content: '【本题背景】\n' + parts.join('\n\n') });
+      messages.push({ role: 'assistant', content: '好，我已读完这道题。' });
+    }
+    msgs.slice(0, -2).slice(-8).forEach(function (m) {
+      if (m.text) messages.push({ role: m.role, content: m.text });
+    });
+    messages.push({ role: 'user', content: text });
+
+    var lastPaint = 0;
+    chat(messages, {
+      temperature: 0.4,
+      max_tokens: 2600,
+      onDelta: function (kind, piece) {
+        if (kind === 'content') bot.text += piece;
+        else bot.reasoning += piece;
+        var now = Date.now();
+        if (now - lastPaint > 90) { lastPaint = now; paint(); }
+      }
+    }).then(function () {
+      streaming = false;
+      sendBtn.disabled = false;
+      if (!bot.text) bot.text = '（没有返回内容，请重试）';
+      paint();
+    }).catch(function (e) {
+      streaming = false;
+      sendBtn.disabled = false;
+      bot.err = true;
+      bot.text = (bot.text ? bot.text + '\n\n' : '') + '出错了：' + e.message;
+      paint();
+    });
+  }
+
+  /* ---------- 启动 ---------- */
+  var _render = render;
+  render = function () { _render(); afterRender(); };
+
+  document.documentElement.classList.add('has-ai');
+  buildPanel();
+  afterRender();
+
+  if (!aiCfg.apiKey) {
+    var skipped = false;
+    try { skipped = !!localStorage.getItem(SKIP_KEY); } catch (e) {}
+    if (!skipped) setTimeout(openSetup, 700);
+  }
+})();
+
+</script>
+</body>
+</html>

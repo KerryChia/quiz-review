@@ -184,7 +184,9 @@ python <repo>/scripts/build.py --data data --out dist/index.html
    - 主观题 → 能看到解析，能标记掌握
    - 刷新页面 → 进度还在
 3. 启用 AI 时：首次打开应弹出 Base URL / API Key 的框；关掉后点右下角「AI 助教」能再打开
-4. 窗口缩到 390px 宽，确认手机上能正常做题
+4. **两端都过一遍**：
+   - 电脑上把窗口拖到 1200px：双栏，侧栏吸顶
+   - 手机上（或 DevTools 390×844）：单栏，页面不能出现横向滚动条；公式太宽时只在公式那一行内部横向滚动；底部翻页条吸底且不挡内容；填空框占满整行
 5. 通读页面，**不该出现的话一句都不该有**（见下方文案规则）
 
 ### 第 8 步 · 交付
@@ -220,6 +222,14 @@ python <repo>/scripts/build.py --data data --out dist/index.html
 - 支持：`\frac \sqrt \sum \int \lim \log \ln \max \min`、`^ _`、`\bar \hat \overline`、`\binom`、`\begin{cases}...\end{cases}`、常用希腊字母与关系符号
 - 不支持：`align`、`matrix`、`array`、`\text` 里的复杂排版、Markdown 表格
 - `$` 必须成对；正文里别写美元符号
+
+### 双端：布局不用你操心
+
+模板已经做了手机和电脑两套排版，**不要为了让某道题好看去改 `assets/template.html` 的布局**。遇到显示问题，改题不改样式：
+
+- 一行公式太长 → 拆成两行 `$$...$$`，不要缩字号
+- 选项文本控制在 30 字内，手机上一行放不下会换行显得很挤
+- 题干里不要放表格，也不要放需要横向对照的长式子
 
 ### 不编造
 

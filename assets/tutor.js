@@ -6,7 +6,7 @@
   var CFG_KEY = 'quiz-ai-config-v1';
   var SKIP_KEY = 'quiz-ai-setup-skipped-v1';
   var DEFAULT_BASE = 'https://api.deepseek.com';
-  var DEFAULT_MODEL = 'deepseek-chat';
+  var DEFAULT_MODEL = 'deepseek-flash';
   var COURSE = (window.QUIZ_AI && window.QUIZ_AI.course) || '本课程';
   var aiCfg = { baseUrl: DEFAULT_BASE, apiKey: '', model: DEFAULT_MODEL };
 
@@ -367,7 +367,7 @@
   function syncModelSelect() {
     var sel = document.getElementById('ai-model');
     if (!sel) return;
-    var list = ['deepseek-chat', 'deepseek-reasoner'];
+    var list = ['deepseek-flash', 'deepseek-chat', 'deepseek-reasoner'];
     if (list.indexOf(aiCfg.model) < 0) list.unshift(aiCfg.model);
     sel.innerHTML = list.map(function (m) {
       return '<option value="' + esc(m) + '"' + (m === aiCfg.model ? ' selected' : '') + '>' + esc(m) + '</option>';
@@ -487,6 +487,7 @@
   var _render = render;
   render = function () { _render(); afterRender(); };
 
+  document.documentElement.classList.add('has-ai');
   buildPanel();
   afterRender();
 

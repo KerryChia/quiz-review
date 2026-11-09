@@ -1,0 +1,146 @@
+{
+  "id": "K9",
+  "head": "考点 09",
+  "name": "随机变量函数的分布",
+  "subtitle": "分布函数法 · 单调公式 · 平方 · 截断",
+  "notes": "\n**万能路径**：先写 $F_Y(y)=P(g(X)\\le y)$，再与 $X$ 的取值范围取交，最后求导。\n\n**单调可导时**（$g'$ 不变号）：\n$$f_Y(y)=\\frac{f_X\\big(g^{-1}(y)\\big)}{\\big|g'\\big(g^{-1}(y)\\big)\\big|}$$\n线性特例：$f_{aX+b}(y)=\\dfrac1{|a|}f_X\\left(\\dfrac{y-b}{a}\\right)$。\n\n**非单调必须分支**，且只看**落在支持集内**的原像：\n- $Y=X^2$：$f_Y(y)=\\dfrac{f_X(\\sqrt y)+f_X(-\\sqrt y)}{2\\sqrt y}$，$y>0$。\n- $Y=|X|$：$f_Y(y)=f_X(y)+f_X(-y)$，$y>0$。\n\n**截断产生点质量**：\n$$P\\big(\\min(X,c)=c\\big)=1-F_X(c-),\\qquad P\\big(\\max(X,c)=c\\big)=F_X(c)$$\n截断后**既非离散也非连续**，是混合型，必须单独写出跳点的概率。\n\n**概率积分变换**：$F_X$ 连续时 $F_X(X)\\sim U(0,1)$；反过来 $F^{-1}(U)$ 的分布函数就是 $F$。\n",
+  "questions": [
+    {
+      "id": "K9-1",
+      "type": "choice",
+      "stem": "设 $X\\sim U(0,1)$，令 $Y=-2\\ln X$，则 $Y$ 服从____。",
+      "options": [
+        [
+          "A",
+          "$E(2)$"
+        ],
+        [
+          "B",
+          "$E\\left(\\dfrac12\\right)$"
+        ],
+        [
+          "C",
+          "$U(0,2)$"
+        ],
+        [
+          "D",
+          "$E(1)$"
+        ]
+      ],
+      "answer": "B",
+      "solution": "**用分布函数法（最稳，不用记公式）**。$Y>0$，对 $y>0$：\n$$F_Y(y)=P(-2\\ln X\\le y)=P\\left(\\ln X\\ge-\\frac y2\\right)=P\\left(X\\ge e^{-y/2}\\right)$$\n因 $X\\sim U(0,1)$ 且 $e^{-y/2}\\in(0,1)$，\n$$F_Y(y)=1-e^{-y/2}$$\n\n这正是参数为 $\\dfrac12$ 的指数分布的分布函数（$F=1-e^{-\\lambda y}$，$\\lambda=\\dfrac12$）。\n\n**验证密度**：$f_Y(y)=\\dfrac12e^{-y/2}$，$y>0$ ✓，积分 $\\int_0^\\infty\\frac12e^{-y/2}dy=1$。\n\n**期望检验**：$E(Y)=\\dfrac{1}{\\lambda}=2$，而 $E(-2\\ln X)=-2\\int_0^1\\ln x\\,dx=2$ ✓（因为 $\\int_0^1\\ln x\\,dx=-1$）。\n\n**记忆**：$-a\\ln U\\sim E\\left(\\dfrac1a\\right)$，$U\\sim U(0,1)$。这是「概率积分变换」最常见的应用，随机数生成器就靠它造指数分布。"
+    },
+    {
+      "id": "K9-2",
+      "type": "choice",
+      "stem": "设 $X\\sim N(0,1)$，令 $Y=X^{2}$，则当 $y>0$ 时 $f_Y(y)=$____。",
+      "options": [
+        [
+          "A",
+          "$\\dfrac{1}{\\sqrt{2\\pi y}}e^{-y/2}$"
+        ],
+        [
+          "B",
+          "$\\dfrac{1}{\\sqrt{2\\pi}}e^{-y/2}$"
+        ],
+        [
+          "C",
+          "$\\dfrac{1}{\\sqrt{2\\pi y}}e^{-y}$"
+        ],
+        [
+          "D",
+          "$\\dfrac{2}{\\sqrt{2\\pi}}e^{-y/2}$"
+        ]
+      ],
+      "answer": "A",
+      "solution": "**非单调变换，必须合并两支。**\n\n$$F_Y(y)=P(X^2\\le y)=P(-\\sqrt y\\le X\\le\\sqrt y)=\\Phi_0(\\sqrt y)-\\Phi_0(-\\sqrt y)=2\\Phi_0(\\sqrt y)-1$$\n\n**求导**（链式法则，注意内层导数是 $\\dfrac{1}{2\\sqrt y}$）：\n$$f_Y(y)=2\\varphi_0(\\sqrt y)\\cdot\\frac{1}{2\\sqrt y}=\\frac{\\varphi_0(\\sqrt y)}{\\sqrt y}$$\n代入 $\\varphi_0(u)=\\dfrac{1}{\\sqrt{2\\pi}}e^{-u^2/2}$，$u=\\sqrt y$：\n$$f_Y(y)=\\frac{1}{\\sqrt{2\\pi y}}e^{-y/2},\\qquad y>0$$\n\n**这就是自由度 1 的 $\\chi^2$ 分布**（$\\chi^2(1)$）。\n\n**通用公式对照**：$f_Y(y)=\\dfrac{f_X(\\sqrt y)+f_X(-\\sqrt y)}{2\\sqrt y}$。本题 $f_X$ 是偶函数，两支相等，故为 $\\dfrac{2f_X(\\sqrt y)}{2\\sqrt y}=\\dfrac{f_X(\\sqrt y)}{\\sqrt y}$ ✓。\n\n**三个干扰项的错误**：B 漏了 $\\dfrac{1}{\\sqrt y}$（忘了链式法则的因子）；C 指数上少了 $\\dfrac12$；D 多乘了 2（把合并两支后的系数又乘了一遍）。"
+    },
+    {
+      "id": "K9-3",
+      "type": "choice",
+      "stem": "设 $X$ 的密度为 $f_X(x)$，令 $Y=2X$，则 $f_Y(y)=$____。",
+      "options": [
+        [
+          "A",
+          "$2f_X(2y)$"
+        ],
+        [
+          "B",
+          "$\\dfrac12f_X\\left(\\dfrac y2\\right)$"
+        ],
+        [
+          "C",
+          "$f_X\\left(\\dfrac y2\\right)$"
+        ],
+        [
+          "D",
+          "$f_X(2y)$"
+        ]
+      ],
+      "answer": "B",
+      "solution": "**用分布函数法**：\n$$F_Y(y)=P(2X\\le y)=P\\left(X\\le\\frac y2\\right)=F_X\\left(\\frac y2\\right)$$\n两边对 $y$ 求导，链式法则带出 $\\dfrac12$：\n$$f_Y(y)=\\frac12f_X\\left(\\frac y2\\right)$$\n\n**通用线性公式**：$f_{aX+b}(y)=\\dfrac{1}{|a|}f_X\\left(\\dfrac{y-b}{a}\\right)$。本题 $a=2,b=0$。\n\n**为什么必须除 $|a|$**：$Y$ 的取值范围被拉伸了 2 倍，为保持总积分仍为 1，密度高度必须压缩为一半。可以用均匀分布验证：$X\\sim U(0,1)$ 时 $Y=2X\\sim U(0,2)$，密度从 1 变成 $\\dfrac12$ ✓。\n\n**干扰项分析**：A 是 $a=-2$ 情形的错误写法（还漏了绝对值）；C 忘了系数；D 把「拉伸」当成了「压缩」。"
+    },
+    {
+      "id": "K9-4",
+      "type": "choice",
+      "stem": "设 $X\\sim E(1)$（密度 $e^{-x}$，$x>0$），令 $Y=\\min(X,2)$，则 $P(Y=2)=$____。",
+      "options": [
+        [
+          "A",
+          "$e^{-2}$"
+        ],
+        [
+          "B",
+          "$1-e^{-2}$"
+        ],
+        [
+          "C",
+          "$2e^{-2}$"
+        ],
+        [
+          "D",
+          "$0$"
+        ]
+      ],
+      "answer": "A",
+      "solution": "**$Y$ 是混合型**：$0<Y<2$ 时连续，$Y=2$ 处有一个点质量。\n\n**点质量来自截断**：$Y=2$ 当且仅当 $X\\ge2$，\n$$P(Y=2)=P(X\\ge2)=1-F_X(2)=e^{-2}\\approx0.1353$$\n\n**完整分布函数**：\n$$F_Y(y)=\\begin{cases}0, & y<0\\\\ 1-e^{-y}, & 0\\le y<2\\\\ 1, & y\\ge2\\end{cases}$$\n在 $y=2$ 处从 $1-e^{-2}\\approx0.865$ 跳到 1，跳跃高度 $e^{-2}$ ✓。\n\n**易错**：写成 $1-e^{-2}$ ——那是 $P(X<2)$，即「没被截断」的概率，方向正好相反。截断到 2 说明**超出的部分全部堆到 2 上**。\n\n**对照 $\\max$**：若 $Y=\\max(X,2)$，则 $P(Y=2)=P(X\\le2)=1-e^{-2}$。两个函数的点质量位置相同、方向相反。"
+    },
+    {
+      "id": "K9-5",
+      "type": "judge",
+      "stem": "连续型随机变量的函数一定还是连续型随机变量。",
+      "answer": "错",
+      "solution": "**三类反例**（都来自连续型）：\n\n- **截断**：$Y=\\min(X,c)$。$X$ 连续，但 $Y$ 在 $c$ 处有质量 $P(X\\ge c)>0$，是混合型。\n- **取整**：$Y=\\lfloor X\\rfloor$。$X\\sim U(0,3)$ 时 $Y$ 只取 $0,1,2$，是离散型。\n- **指示**：$Y=\\mathbf{1}\\{X>0\\}$。取值只有 0 与 1，明显是离散型。\n\n**结论**：连续型的函数一般**既可能连续、也可能离散、还可能是混合型**，必须先看 $g$ 是否把区间「压成点」。\n\n**判别方法**：求 $F_Y(y)=P(g(X)\\le y)$，看有没有跳跃。有跳跃就是离散或混合。\n\n**相反方向是对的**：离散型的函数仍是离散型（取值至多可列）。"
+    },
+    {
+      "id": "K9-6",
+      "type": "judge",
+      "stem": "若 $g$ 严格单调且可导、$g'\\ne0$，则 $f_Y(y)=\\dfrac{f_X\\left(g^{-1}(y)\\right)}{\\left|g'\\left(g^{-1}(y)\\right)\\right|}$。",
+      "answer": "对",
+      "solution": "**推导**（以 $g$ 严格递增为例）：\n$$F_Y(y)=P(g(X)\\le y)=P\\left(X\\le g^{-1}(y)\\right)=F_X\\left(g^{-1}(y)\\right)$$\n求导并用链式法则：\n$$f_Y(y)=f_X\\left(g^{-1}(y)\\right)\\cdot\\frac{d}{dy}g^{-1}(y)$$\n而反函数求导公式给出 $\\dfrac{d}{dy}g^{-1}(y)=\\dfrac{1}{g'\\left(g^{-1}(y)\\right)}$。\n\n$g$ 递减时 $F_Y(y)=1-F_X\\left(g^{-1}(y)\\right)$，求导多一个负号，正好被绝对值吸收，所以统一写成 $\\left|g'\\right|$。\n\n**三个使用前提**：$g$ 单调、可导、导数不为 0。缺一个就要回到分布函数法。\n\n**最容易错的地方**：把 $g^{-1}(y)$ 写成 $y$，或者忘记分母。用 $Y=2X$ 检验：$g^{-1}(y)=\\dfrac y2$，$g'=2$，得 $\\dfrac12f_X\\left(\\dfrac y2\\right)$ ✓ 与考点 09 上一题一致。"
+    },
+    {
+      "id": "K9-7",
+      "type": "fill",
+      "stem": "设 $X\\sim U(0,1)$，令 $Y=\\sqrt X$，求 $E(Y)$。",
+      "fields": [
+        {
+          "label": "$E(Y)$",
+          "a": "2/3",
+          "kind": "num",
+          "alt": [
+            "0.6667"
+          ]
+        }
+      ],
+      "solution": "**分布函数法**：$0<y<1$ 时\n$$F_Y(y)=P(\\sqrt X\\le y)=P(X\\le y^2)=y^2$$\n$$f_Y(y)=2y,\\qquad 0<y<1$$\n\n**求期望**：\n$$E(Y)=\\int_0^1y\\cdot2y\\,dy=\\frac23$$\n\n**更快的做法（不必求分布）**：\n$$E(\\sqrt X)=\\int_0^1\\sqrt x\\,dx=\\frac23$$\n本题问的只是 $E[g(X)]$，直接用 $X$ 的密度算即可，省掉求 $f_Y$ 的一整步。\n\n**什么时候必须先求分布**：问 $D(Y)$、问 $P(Y>a)$、或问 $Y$ 的分位数时。只问 $E[g(X)]$ 就不用。\n\n**验算**：$E(Y^2)=E(X)=\\dfrac12$，故 $D(Y)=\\dfrac12-\\dfrac49=\\dfrac1{18}$。"
+    },
+    {
+      "id": "K9-8",
+      "type": "subjective",
+      "points": 10,
+      "stem": "设 $X\\sim U(-1,2)$，令 $Y=X^{2}$。\n(1) 求 $Y$ 的取值范围；\n(2) 求 $Y$ 的分布函数 $F_Y(y)$（分段写出）；\n(3) 求 $Y$ 的概率密度 $f_Y(y)$；\n(4) 求 $E(Y)$，并用 $E(X^2)$ 验算。",
+      "solution": "**(1) 范围。** $X\\in(-1,2)$，故 $Y=X^2\\in[0,4)$。\n\n**(2) 分布函数。** $X$ 的密度为 $\\dfrac13$（区间长度 3）。对 $y\\ge0$：\n$$F_Y(y)=P(X^2\\le y)=P(-\\sqrt y\\le X\\le\\sqrt y)$$\n**关键**：这个区间要**与 $(-1,2)$ 取交**，而左右两端的「截断点」不同：\n- 左端 $\\max(-\\sqrt y,-1)$，在 $y<1$ 时是 $-\\sqrt y$，在 $y\\ge1$ 时被 $-1$ 卡住；\n- 右端 $\\min(\\sqrt y,2)$，在 $y<4$ 时是 $\\sqrt y$。\n\n于是分段：\n$$F_Y(y)=\\begin{cases}0, & y<0\\\\ \\dfrac{2\\sqrt y}{3}, & 0\\le y<1\\\\ \\dfrac{\\sqrt y+1}{3}, & 1\\le y<4\\\\ 1, & y\\ge4\\end{cases}$$\n\n**检查接点**：$y=1$ 处 $\\dfrac{2}{3}$ 与 $\\dfrac{1+1}{3}=\\dfrac23$ ✓ 连续；$y=4$ 处 $\\dfrac{2+1}{3}=1$ ✓。\n\n**(3) 密度。** 分段求导：\n$$f_Y(y)=\\begin{cases}\\dfrac{1}{3\\sqrt y}, & 0<y<1\\\\[6pt] \\dfrac{1}{6\\sqrt y}, & 1<y<4\\\\[6pt] 0, & \\text{其他}\\end{cases}$$\n\n**归一化检验**：\n$$\\int_0^1\\frac{dy}{3\\sqrt y}=\\frac{2}{3},\\qquad \\int_1^4\\frac{dy}{6\\sqrt y}=\\frac{1}{3}\\left(2-1\\right)=\\frac13$$\n合计 $1$ ✓。两段的质量 $\\dfrac23$、$\\dfrac13$ 正好对应 $|X|<1$ 与 $1<X<2$ 两段的长度比 $2:1$。\n\n**(4) 期望。** 用 $X$ 的密度直接算最快：\n$$E(Y)=E(X^2)=\\int_{-1}^{2}x^2\\cdot\\frac13dx=\\frac13\\cdot\\frac{x^3}{3}\\Big|_{-1}^{2}=\\frac13\\cdot\\frac{8+1}{3}=1$$\n\n**用 $f_Y$ 验算**（把 $y=\\sqrt y\\cdot\\sqrt y$ 提出来更省力）：\n$$\\int_0^1\\frac{y\\,dy}{3\\sqrt y}=\\int_0^1\\frac{\\sqrt y}{3}dy=\\frac{2}{9}$$\n$$\\int_1^4\\frac{y\\,dy}{6\\sqrt y}=\\int_1^4\\frac{\\sqrt y}{6}dy=\\frac{1}{6}\\cdot\\frac23\\left(4^{3/2}-1\\right)=\\frac{1}{9}\\times7=\\frac{7}{9}$$\n$$E(Y)=\\frac29+\\frac79=1\\ ✓$$\n\n**为什么 $E(X^2)=1$**：$E(X)=\\dfrac{-1+2}{2}=0.5$，$D(X)=\\dfrac{(2+1)^2}{12}=\\dfrac34$，故 $E(X^2)=0.25+0.75=1$ ✓。\n\n**本题的关键动作**：**分段点不是由 $g$ 单独决定的，而是 $g$ 的值域与 $X$ 的支撑集「撞」出来的**。这里 $X$ 的负半轴只到 $-1$，所以 $\\sqrt y$ 到 1 就不再增长，分段点只能是 $y=1$（对应 $X=-1$）与 $y=4$（对应 $X=2$）。"
+    }
+  ]
+}

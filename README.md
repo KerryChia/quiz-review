@@ -6,7 +6,14 @@
 
 ![预览](docs/preview.png)
 
-[在线试玩这个示例](https://kerrychia.github.io/quiz-review/)（9 题，够看出交互是什么样）
+在线示例（都是这套模板生成的）：
+
+| 示例 | 规模 | 链接 |
+| --- | --- | --- |
+| 概率论与数理统计 · 期中强化 | 186 题 / 18 板块 | [打开](https://kerrychia.github.io/quiz-review/) |
+| 数据结构与算法 · 期末复习 | 9 题 / 4 板块 | [打开](https://kerrychia.github.io/quiz-review/demo.html) |
+
+手机上直接扫也行，排版是单栏的。第一个示例的题库源码在 `examples/probability/data`，可以照着它的规模改。
 
 ---
 
@@ -46,7 +53,7 @@ AI 用的是**你自己的 API Key**，只存在你浏览器里。它会再问�
 - 有（DeepSeek、OpenAI、硅基流动等都行）→ 直接生成，你第一次打开页面时填地址和 Key
 - 没有 → 它会给你 [DeepSeek 开放平台](https://platform.deepseek.com/) 的链接，注册后充几块钱就够刷完一门课
 
-Key 不会出现在对话里，也不会写进任何文件。你第一次打开生成的 HTML 时，会弹一个框让你填 Base URL（默认 `https://api.deepseek.com`）和 API Key，只保存在当前浏览器。
+Key 不会出现在对话里，也不会写进任何文件。你第一次打开生成的 HTML 时，会弹一个框让你填 Base URL（默认 `https://api.deepseek.com`）和 API Key，只保存在当前浏览器。模型默认 `deepseek-flash`，想换在「高级：模型名」里改。
 
 不要 AI 助教的话，这块会整个去掉，页面更干净，文件也更小。
 
@@ -61,7 +68,7 @@ Key 不会出现在对话里，也不会写进任何文件。你第一次打开�
 - **知识点梳理**：每个板块开头可折叠，先看再做题
 - **错题与收藏**：侧栏按「未完成 / 错题 / 收藏」筛
 - **进度保存**：存在 `localStorage`，关掉再开还在
-- **手机可用**：窄屏自动单列
+- **手机和电脑都好用**：电脑双栏、侧栏吸顶；手机单栏、翻页条吸底、公式过长只在公式内部横滑，页面本身不会左右晃
 
 ---
 
@@ -90,7 +97,7 @@ Key 不会出现在对话里，也不会写进任何文件。你第一次打开�
 quiz-review/
 ├── SKILL.md                  # 给 AI 助手的执行手册
 ├── assets/
-│   ├── template.html         # 页面模板（含公式渲染、判分、进度）
+│   ├── template.html         # 页面模板（含公式渲染、判分、进度、双端样式）
 │   ├── tutor.css             # AI 助教样式
 │   └── tutor.js              # AI 助教逻辑（纯前端）
 ├── scripts/
@@ -100,7 +107,10 @@ quiz-review/
 │   ├── data-schema.md        # 题库字段说明
 │   ├── authoring.md          # 出题与解析规范
 │   └── ai-tutor.md           # AI 助教接入说明
-└── examples/demo/            # 可直接构建的示例题库
+├── examples/
+│   ├── demo/                 # 9 题最小示例（数据结构）
+│   └── probability/          # 186 题完整示例（概率论）
+└── docs/                     # 上面两个示例构建出的在线版本
 ```
 
 ## 自己构建
@@ -113,7 +123,7 @@ python ../../scripts/validate.py --data data
 python ../../scripts/build.py --data data --out dist/index.html --open
 ```
 
-`examples/demo/data` 里是一个 9 题的示例，照着改就行。
+`examples/demo/data` 是 9 题的最小示例，照着改就行。想看大题量的组织方式就翻 `examples/probability/data`：18 个板块、186 题、每板块一个文件。
 
 构建参数：
 

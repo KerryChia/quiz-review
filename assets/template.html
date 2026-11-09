@@ -2,15 +2,17 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
+<meta name="theme-color" content="#faf9f6">
 <title>__COURSE__</title>
 <style>
 :root{--bg:#faf9f6;--surface:#fff;--ink:#241f1e;--muted:#6d6663;--line:#e5e0d8;--gold:#9E1B2C;--gold-bg:#fbf1f1;--blue:#2c4f7c;--blue-bg:#eef2f7;--green:#2f6b4f;--green-bg:#edf4ef;--red:#a33e32;--red-bg:#fbeeea;--radius:16px}
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+button{cursor:pointer;transition:background .15s,border-color .15s,color .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 button:disabled{cursor:default}
 a{color:var(--blue)}
 .wrap{max-width:1200px;margin:0 auto;padding:26px 28px 46px}
@@ -31,7 +33,7 @@ a{color:var(--blue)}
 .panel p{margin:0;font-size:12.5px;color:var(--muted)}
 .pack-subtitle{font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.6}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.stat-number{font:26px/1.1 Georgia,serif;color:var(--gold)}
+.stat-number{font:700 25px/1.1 -apple-system,"Segoe UI",Roboto,"PingFang SC",sans-serif;color:var(--gold);font-variant-numeric:lining-nums tabular-nums}
 .stat-label{font-size:11.5px;color:var(--muted);line-height:1.4}
 .progress{height:7px;background:#efeae1;border-radius:99px;overflow:hidden;margin:10px 0 6px}
 .progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
@@ -109,15 +111,52 @@ a{color:var(--blue)}
 .sol{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;font-size:13.5px;color:#4d4842;line-height:1.85;display:none}
 .sol.show{display:block}
 .sol b{color:var(--gold)}
+.stem,.sol,.fb,.notes-body{overflow-wrap:break-word}
 .pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
 .pager .btn{display:inline-flex;align-items:center;gap:6px}
+@media(min-width:901px) and (max-width:1407px){.has-ai .pager{padding-right:104px}}
 .pos{font-size:12.5px;color:var(--muted)}
 .empty{padding:40px 10px;text-align:center;color:var(--muted);font-size:14px}
-@media(max-width:900px){.layout{display:flex;flex-direction:column}.main{order:1}.sidebar{order:2;position:static}.wrap{padding:20px 16px 36px}.card{padding:20px 18px}
-.tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
-.tab{flex:0 0 auto;white-space:nowrap}
-.brand{font-size:14px}.topnote{font-size:11px}}
-@media(max-width:520px){.topnote{display:none}.brand>span:last-child{font-size:13px}.map{grid-template-columns:repeat(8,1fr)}.judge{grid-template-columns:1fr}}
+@media(max-width:900px){
+  .layout{display:flex;flex-direction:column}
+  .main{order:1}
+  .sidebar{order:2;position:static}
+  .wrap{padding:20px 16px calc(84px + env(safe-area-inset-bottom))}
+  .card{padding:20px 18px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;scrollbar-width:thin}
+  .tab{flex:0 0 auto;white-space:nowrap}
+  .brand{font-size:14px}
+  .topnote{font-size:11px}
+  .pager{position:sticky;bottom:0;z-index:30;margin:14px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(250,249,246,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+  .pager .btn{min-height:44px}
+  .notes{overflow:hidden}
+}
+@media(max-width:520px){
+  .topnote{display:none}
+  .brand>span:last-child{font-size:13px}
+  .map{grid-template-columns:repeat(8,1fr)}
+  .judge{grid-template-columns:1fr}
+  .wrap{padding:16px 12px calc(80px + env(safe-area-inset-bottom))}
+  .card{padding:18px 14px;min-height:0}
+  .stem{font-size:15.5px;line-height:1.8}
+  .opt{padding:11px 12px}
+  .fillrow label{min-width:100%}
+  .fillrow input{width:100%}
+  .pager{margin-left:-12px;margin-right:-12px;padding-left:12px;padding-right:12px}
+  .pager .btn{flex:1;justify-content:center;padding:11px 10px}
+  .notes{padding:12px 13px}
+  .panel{padding:14px}
+  .tabs{margin:14px -12px 16px;padding:0 12px 6px}
+  .qtop{gap:6px}
+  .qid{margin-left:0}
+}
+@media(max-width:360px){
+  .map{grid-template-columns:repeat(6,1fr)}
+  .wrap{padding:14px 10px calc(80px + env(safe-area-inset-bottom))}
+  .pager{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+  .tabs{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+}
 
 .m{font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;white-space:nowrap}
 .m .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .18em;font-size:.94em;line-height:1.18}
@@ -140,12 +179,13 @@ a{color:var(--blue)}
 .m sup,.m sub{font-size:.72em}
 .notes .m{font-style:italic}
 .eqi{font-weight:400}
-.eq{display:block;text-align:center;margin:11px 0;font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;line-height:1.95}
+.eq{display:block;text-align:center;margin:11px 0;font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;line-height:1.95;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
 .eq .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .22em;line-height:1.2;font-size:.96em}
 .eq .frac .fn{border-bottom:1px solid currentColor;padding:0 .22em}
 .eq .frac .fd{padding:0 .22em}
 .eq sup,.eq sub{font-size:.72em}
 .eq .ovl{text-decoration:overline}
+@media(pointer:coarse){.fillrow input{font-size:16px}}
 </style>
 __HEAD_EXTRA__
 </head>
@@ -177,7 +217,7 @@ __HEAD_EXTRA__
 </aside>
 
 <main class="main">
-  <details class="notes" id="pack-notes" open><summary>知识点梳理</summary><div class="notes-body"></div></details>
+  <details class="notes" id="pack-notes"><summary>知识点梳理</summary><div class="notes-body"></div></details>
   <div class="toolbar">
     <div class="filters" id="filters"></div>
     <span id="filter-count" class="filter-count"></span>
@@ -376,11 +416,10 @@ function fieldOK(val, f){
   const n = norm(val);
   if(f.kind === 'num'){
     const x = toNum(n);
-    if(x === null) return false;
     const pool = [f.a].concat(f.alt || []).map(v => toNum(norm(String(v)))).filter(v => v !== null);
-    return pool.some(v => Math.abs(x - v) < 1e-3);
+    if(x !== null && pool.some(v => Math.abs(x - v) < 1e-3)) return true;
   }
-  return n === norm(f.a) || (f.alt||[]).some(x=>norm(x)===n);
+  return n === norm(f.a) || (f.alt||[]).some(x => norm(x) === n);
 }
 
 function rec(id){
@@ -590,7 +629,6 @@ document.addEventListener('keydown', e => {
   if(e.key === 'ArrowLeft') go(-1);
   if(e.key === 'ArrowRight') go(1);
 });
-if(window.innerWidth < 700) $('#pack-notes').removeAttribute('open');
 load();
 if(!PACKS.some(p=>p.id===state.pack)) state.pack = PACKS[0].id;
 if(!byId.has(state.current)){

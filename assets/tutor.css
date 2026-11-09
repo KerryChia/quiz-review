@@ -6,7 +6,7 @@
 #ai-fab .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.85}
 #ai-fab.off{background:#8d8580;box-shadow:0 8px 22px rgba(36,31,30,.18)}
 
-#ai-panel{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;z-index:70;display:none;
+#ai-panel{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:100vw;height:100dvh;z-index:70;display:none;
   flex-direction:column;background:var(--surface);border-left:1px solid var(--line);
   box-shadow:-12px 0 40px rgba(36,31,30,.14)}
 #ai-panel.open{display:flex}
@@ -66,8 +66,20 @@
 .ai-modal-hint a{color:var(--blue)}
 .ai-err{color:var(--red);font-size:12px;margin:6px 0 0;display:none}
 
-@media (max-width:900px){.wrap{padding-bottom:96px}}
+@media (max-width:900px){
+  #ai-fab{right:16px;bottom:calc(80px + env(safe-area-inset-bottom))}
+}
 @media (max-width:721px){
-  #ai-fab{right:14px;bottom:14px;padding:10px 15px}
-  #ai-panel{width:100vw}
+  #ai-fab{right:12px;bottom:calc(76px + env(safe-area-inset-bottom));padding:10px 14px}
+  #ai-panel{width:100vw;border-left:none}
+  #ai-panel header{padding-top:calc(12px + env(safe-area-inset-top))}
+  .ai-inputrow{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  #ai-setup{padding:12px;align-items:flex-start;overflow-y:auto}
+  .ai-modal-box{margin:auto;border-radius:14px;padding:18px 16px 14px}
+  .ai-msg{max-width:100%}
+  .ai-quick button{padding:6px 12px}
+  #ai-input,.solinput textarea,.ai-field input{font-size:16px}
+  #ai-close{padding:0 8px;font-size:24px}
+  #ai-gear{padding:4px 8px;font-size:17px}
+  #ai-model{max-width:120px}
 }

@@ -18,7 +18,7 @@
 {
   "baseUrl": "https://api.deepseek.com",
   "apiKey": "sk-...",
-  "model": "deepseek-chat"
+  "model": "deepseek-flash"
 }
 ```
 
@@ -32,7 +32,7 @@
 
 - **Base URL**：默认 `https://api.deepseek.com`
 - **API Key**：密码框
-- **高级：模型名**：默认 `deepseek-chat`
+- **高级：模型名**：默认 `deepseek-flash`
 - 底部有指向 `https://platform.deepseek.com/` 的链接
 
 点「稍后再说」会记一个跳过标记，之后不再自动弹，但点右下角「AI 助教」还能打开。
@@ -43,7 +43,7 @@
 
 | 服务 | Base URL | 模型名示例 |
 | --- | --- | --- |
-| DeepSeek | `https://api.deepseek.com` | `deepseek-chat` / `deepseek-reasoner` |
+| DeepSeek | `https://api.deepseek.com` | `deepseek-flash`（默认）/ `deepseek-chat` / `deepseek-reasoner` |
 | OpenAI | `https://api.openai.com` | `gpt-4o-mini` |
 | 硅基流动 | `https://api.siliconflow.cn` | `deepseek-ai/DeepSeek-V3` |
 | Moonshot | `https://api.moonshot.cn` | `moonshot-v1-8k` |
@@ -96,7 +96,7 @@ user:   【题目】…【参考答案与评分点】…【学生作答】…
 
 ```js
 var DEFAULT_BASE = 'https://api.deepseek.com';
-var DEFAULT_MODEL = 'deepseek-chat';
+var DEFAULT_MODEL = 'deepseek-flash';
 ```
 
 想改助教人设或答题风格，改 `ASK_SYS` 和 `GRADE_SYS` 两个字符串。注意保留判卷的「只输出 JSON」要求和字段名，否则解析会失败。
