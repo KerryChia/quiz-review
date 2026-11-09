@@ -1,0 +1,14 @@
+dist/
+__pycache__/
+*.pyc
+.DS_Store
+
+# 本地构建产物
+*.local.html
+
+# 开发期临时文件
+.check_*.py
+.mock_api.py
+.make_preview.py
+raw_preview.png
+shot-*.png

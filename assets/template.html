@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>__COURSE__</title>
+<style>
+:root{--bg:#faf9f6;--surface:#fff;--ink:#241f1e;--muted:#6d6663;--line:#e5e0d8;--gold:#9E1B2C;--gold-bg:#fbf1f1;--blue:#2c4f7c;--blue-bg:#eef2f7;--green:#2f6b4f;--green-bg:#edf4ef;--red:#a33e32;--red-bg:#fbeeea;--radius:16px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+button:disabled{cursor:default}
+a{color:var(--blue)}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 28px 46px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.03em;min-width:0}
+.brandmark{display:grid;place-items:center;background:var(--ink);color:#fff;border-radius:10px;width:36px;height:36px;flex:0 0 36px;font-family:Georgia,serif;font-size:19px}
+.brand>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topnote{color:var(--muted);font-size:12px;text-align:right;white-space:nowrap}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.tab{background:transparent;border:1px solid var(--line);border-radius:10px;padding:9px 13px;color:var(--muted);font-size:13px}
+.tab:hover{border-color:#cfc7b8;color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.layout{display:grid;grid-template-columns:252px minmax(0,1fr);gap:24px;align-items:start}
+.sidebar{position:sticky;top:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel+.panel{margin-top:14px}
+.panel h2{font-size:15px;margin:0 0 4px}
+.panel p{margin:0;font-size:12.5px;color:var(--muted)}
+.pack-subtitle{font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.6}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.stat-number{font:26px/1.1 Georgia,serif;color:var(--gold)}
+.stat-label{font-size:11.5px;color:var(--muted);line-height:1.4}
+.progress{height:7px;background:#efeae1;border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
+.progress-caption{font-size:11.5px;color:var(--muted);margin:0 0 12px}
+.map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.map button{aspect-ratio:1;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:11.5px;color:var(--muted);padding:0;position:relative}
+.map button:hover{border-color:#c9bfae}
+.map button.done{background:var(--green-bg);border-color:#bcd6c5;color:var(--green);font-weight:700}
+.map button.wrong{background:var(--red-bg);border-color:#e3c3bb;color:var(--red);font-weight:700}
+.map button.mastered{background:var(--blue-bg);border-color:#c3d7e0;color:var(--blue);font-weight:700}
+.map button.current{outline:2px solid var(--ink);outline-offset:1px}
+.map button.star::after{content:"★";position:absolute;top:-2px;right:1px;font-size:8px;color:var(--gold)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}
+.legend .g{background:#bcd6c5}.legend .r{background:#e3c3bb}.legend .b{background:#c3d7e0}
+.save-label{font-size:11px;color:var(--muted);margin-top:12px}
+.save-label.error{color:var(--red)}
+.reset{width:100%;margin-top:8px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px;font-size:12px;color:var(--muted)}
+.reset:hover{border-color:var(--red);color:var(--red)}
+.main{min-width:0}
+.notes{background:var(--gold-bg);border:1px solid #efe0c4;border-radius:var(--radius);padding:14px 18px;margin-bottom:16px;font-size:13px}
+.notes summary{cursor:pointer;font-weight:700;color:var(--gold);font-size:13px;list-style:none}
+.notes summary::-webkit-details-marker{display:none}
+.notes summary::before{content:"▸ ";font-size:11px}
+.notes[open] summary::before{content:"▾ "}
+.notes .notes-body{margin-top:10px;color:#5b554c;line-height:1.85}
+.notes .notes-body p{margin:0 0 6px}
+.notes .notes-body ul{margin:4px 0 8px 1.2em;padding:0}
+.notes .notes-body li{margin:3px 0;padding-left:2px}
+.notes .notes-body p:last-child{margin:0}
+.sol ul{margin:6px 0 8px 1.2em;padding:0}
+.sol li{margin:4px 0}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:12px;color:var(--muted)}
+.filter[aria-pressed="true"]{background:var(--gold-bg);border-color:#e2cda5;color:var(--gold);font-weight:700}
+.filter-count{font-size:12px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 30px;min-height:340px}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.badge{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--blue-bg);color:var(--blue);font-weight:700}
+.badge.pts{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(158,27,44,.18)}
+.badge.chap{background:#f2efe9;color:var(--muted)}
+.qid{font-size:12px;color:var(--muted);margin-left:auto}
+.star{background:none;border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:13px;color:#c9bfae}
+.star[aria-pressed="true"]{color:var(--gold);border-color:#e2cda5;background:var(--gold-bg)}
+.stem{font-size:16px;line-height:1.85;margin:0 0 18px;font-weight:600}
+.stem .sub{font-weight:400;color:var(--muted);font-size:13.5px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:11px;align-items:flex-start;text-align:left;background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:14px;line-height:1.7;width:100%}
+.opt:hover{border-color:#cfc7b8;background:#fdfcfa}
+.opt .k{flex:0 0 22px;height:22px;border-radius:6px;background:#f2efe9;color:var(--muted);display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+.opt.picked{border-color:var(--ink);background:#fbfaf7}
+.opt.correct{border-color:#9cc4ab;background:var(--green-bg)}
+.opt.correct .k{background:#bcd6c5;color:var(--green)}
+.opt.wrong{border-color:#e0bcb3;background:var(--red-bg)}
+.opt.wrong .k{background:#e3c3bb;color:var(--red)}
+.opt[disabled]{opacity:1}
+.judge{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fillrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+.fillrow label{font-size:13.5px;color:var(--muted);min-width:100%}
+.fillrow input{border:1px solid var(--line);border-radius:9px;padding:9px 12px;width:190px;background:#fff}
+.fillrow input:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:10px;padding:9px 16px;font-size:13.5px}
+.btn:hover{background:#2b2926}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:#cfc7b8;background:#fbfaf7}
+.fb{margin-top:16px;border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.8}
+.fb.ok{background:var(--green-bg);border:1px solid #c9dece}
+.fb.no{background:var(--red-bg);border:1px solid #e6c8c0}
+.fb.info{background:var(--blue-bg);border:1px solid #c8dae2}
+.fb h3{margin:0 0 6px;font-size:13px;letter-spacing:.04em}
+.fb p{margin:0 0 6px}
+.fb p:last-child{margin:0}
+.sol{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;font-size:13.5px;color:#4d4842;line-height:1.85;display:none}
+.sol.show{display:block}
+.sol b{color:var(--gold)}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.pager .btn{display:inline-flex;align-items:center;gap:6px}
+.pos{font-size:12.5px;color:var(--muted)}
+.empty{padding:40px 10px;text-align:center;color:var(--muted);font-size:14px}
+@media(max-width:900px){.layout{display:flex;flex-direction:column}.main{order:1}.sidebar{order:2;position:static}.wrap{padding:20px 16px 36px}.card{padding:20px 18px}
+.tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.tab{flex:0 0 auto;white-space:nowrap}
+.brand{font-size:14px}.topnote{font-size:11px}}
+@media(max-width:520px){.topnote{display:none}.brand>span:last-child{font-size:13px}.map{grid-template-columns:repeat(8,1fr)}.judge{grid-template-columns:1fr}}
+
+.m{font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;white-space:nowrap}
+.m .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .18em;font-size:.94em;line-height:1.18}
+.m .frac .fn{border-bottom:1px solid currentColor;padding:0 .18em}
+.m .frac .fd{padding:0 .18em}
+.m .sqrt .sq{border-top:1px solid currentColor;padding:0 .16em}
+.m .binom sub,.m .binom sup{font-size:.72em;vertical-align:baseline}
+.m .binom sup{vertical-align:super}
+.m .binom sub{vertical-align:-.25em}
+.m .ovl{text-decoration:overline}
+.m .acc,.eq .acc{text-decoration:overline;margin:0 .13em;padding:0}
+.cases{display:inline-flex;align-items:center;vertical-align:middle;margin:0 .25em}
+.cbrace{font-weight:300;line-height:.82;margin-right:.1em;transform:translateY(-.02em)}
+.crows{display:inline-grid;grid-template-columns:max-content max-content;column-gap:.95em;row-gap:.1em;text-align:left}
+.crow{display:contents}
+.crow .cl{text-align:right;white-space:nowrap}
+.crow .cr{text-align:left;white-space:nowrap}
+.eq .cases{font-size:1.02em}
+.m .up{font-style:normal}
+.m sup,.m sub{font-size:.72em}
+.notes .m{font-style:italic}
+.eqi{font-weight:400}
+.eq{display:block;text-align:center;margin:11px 0;font-family:"Cambria Math","Latin Modern Math",Georgia,serif;font-style:italic;line-height:1.95}
+.eq .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .22em;line-height:1.2;font-size:.96em}
+.eq .frac .fn{border-bottom:1px solid currentColor;padding:0 .22em}
+.eq .frac .fd{padding:0 .22em}
+.eq sup,.eq sub{font-size:.72em}
+.eq .ovl{text-decoration:overline}
+</style>
+__HEAD_EXTRA__
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <div class="brand"><span class="brandmark">__MARK__</span><span>__COURSE__</span></div>
+  <div class="topnote">共 __COUNT__ 题</div>
+</header>
+
+<nav id="pack-tabs" class="tabs" aria-label="切换板块"></nav>
+
+<div class="layout">
+<aside class="sidebar">
+  <section class="panel">
+    <h2 id="pack-name">—</h2>
+    <p class="pack-subtitle" id="pack-subtitle"></p>
+    <div class="stats">
+      <div><div class="stat-number" id="done-number">0</div><div class="stat-label">已完成 / 本组题数</div></div>
+      <div><div class="stat-number" id="correct-number">0</div><div class="stat-label">客观题答对</div></div>
+    </div>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress-bar"></span></div>
+    <p class="progress-caption" id="progress-caption"></p>
+    <div id="question-map" class="map" aria-label="题号导航"></div>
+    <div class="legend"><span><i class="g"></i>答对</span><span><i class="r"></i>答错</span><span><i class="b"></i>主观已掌握</span></div>
+    <p id="storage-status" class="save-label"></p>
+    <button id="reset-all" class="reset" type="button">清空全部答题记录</button>
+  </section>
+</aside>
+
+<main class="main">
+  <details class="notes" id="pack-notes" open><summary>知识点梳理</summary><div class="notes-body"></div></details>
+  <div class="toolbar">
+    <div class="filters" id="filters"></div>
+    <span id="filter-count" class="filter-count"></span>
+  </div>
+  <article id="question-card" class="card"></article>
+  <nav class="pager">
+    <button id="prev" class="btn ghost" type="button">← 上一题</button>
+    <span id="page-position" class="pos"></span>
+    <button id="next" class="btn" type="button">下一题 →</button>
+  </nav>
+</main>
+</div>
+</div>
+<div id="announcement" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></div>
+
+<script id="quiz-data" type="application/json">__DATA__</script>
+<script>
+'use strict';
+const DATA = JSON.parse(document.getElementById('quiz-data').textContent);
+const PACKS = DATA.packs, QS = DATA.questions;
+const KEY = '__STORAGE_KEY__';
+const FILTERS = [['all','全部'],['todo','未完成'],['wrong','错题'],['star','收藏']];
+const TYPE = {choice:'单项选择',judge:'判断',fill:'填空',subjective:'简答/计算'};
+const byId = new Map(QS.map(q => [q.id, q]));
+const $ = s => document.querySelector(s);
+const esc = v => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const state = {pack:(PACKS[0]||{id:'P1'}).id, filter:'all', current:null, rec:{}};
+
+const SYM = {
+  theta:'θ', lambda:'λ', mu:'μ', sigma:'σ', varphi:'φ', phi:'φ', Phi:'Φ', alpha:'α', beta:'β',
+  gamma:'γ', delta:'δ', Delta:'Δ', rho:'ρ', tau:'τ', chi:'χ', Omega:'Ω', omega:'ω', pi:'π',
+  varepsilon:'ε', epsilon:'ε', eta:'η', xi:'ξ', psi:'ψ',
+  infty:'∞', cdot:'·', times:'×', div:'÷', pm:'±', le:'≤', ge:'≥', ne:'≠', approx:'≈', equiv:'≡',
+  to:'→', rightarrow:'→', Rightarrow:'⇒', leftarrow:'←', in:'∈', notin:'∉', subset:'⊂', cup:'∪', cap:'∩',
+  emptyset:'∅', varnothing:'∅', forall:'∀', exists:'∃', therefore:'∴', because:'∵',
+  sum:'Σ', prod:'∏', int:'∫', partial:'∂', nabla:'∇', mid:'|',
+  bigcup:'∪', bigcap:'∩', bigoplus:'⊕', setminus:'∖', langle:'⟨', rangle:'⟩',
+  ln:'ln', log:'log', exp:'exp', max:'max', min:'min', sin:'sin', cos:'cos', tan:'tan',
+  ldots:'…', cdots:'…', dots:'…', prime:'′', circ:'∘', ast:'∗', star:'*',
+  Leftrightarrow:'⇔', leftrightarrow:'↔', Leftarrow:'⇐', Longleftrightarrow:'⟺',
+  iff:'⇔', implies:'⇒', mapsto:'↦', uparrow:'↑', downarrow:'↓',
+  wedge:'∧', vee:'∨', neg:'¬', oplus:'⊕', otimes:'⊗', propto:'∝',
+  leqslant:'≤', geqslant:'≥', ll:'≪', gg:'≫', mp:'∓',
+  subseteq:'⊆', supseteq:'⊇', supset:'⊃', perp:'⊥', parallel:'∥',
+  angle:'∠', triangle:'△', square:'□', bullet:'•', checkmark:'✓',
+  quad:'\u2003', qquad:'\u2003\u2003', ' ':' ', ',':'\u2009', ';':'\u2009', '!':''
+};
+function readGroup(s, i){
+  if(s[i] !== '{') return [s[i] || '', i + 1];
+  let depth = 0, start = i + 1;
+  for(let j = i; j < s.length; j++){
+    if(s[j] === '{') depth++;
+    else if(s[j] === '}'){
+      depth--;
+      if(depth === 0) return [s.slice(start, j), j + 1];
+    }
+  }
+  return [s.slice(start), s.length];
+}
+function readArg(src, i){
+  if(src[i] === '{') return readGroup(src, i);
+  if(src[i] === '\\'){
+    const mm = src.slice(i+1).match(/^[a-zA-Z]+/);
+    if(mm) return [src.slice(i, i+1+mm[0].length), i + 1 + mm[0].length];
+    return [src.slice(i, i+2), i + 2];
+  }
+  return [src[i] || '', i + 1];
+}
+function tex(src){
+  let out = '', i = 0;
+  while(i < src.length){
+    const c = src[i];
+    if(c === '\\'){
+      const m = src.slice(i+1).match(/^[a-zA-Z]+/);
+      const cmd = m ? m[0] : src[i+1];
+      let ni = i + 1 + (m ? m[0].length : 1);
+      if(m){ while(src[ni] === ' ') ni++; }
+      if(cmd === 'begin' && src.startsWith('{cases}', ni)){
+        const close = src.indexOf('\\end{cases}', ni + 7);
+        const body = close < 0 ? src.slice(ni + 7) : src.slice(ni + 7, close);
+        const rows = body.split('\\\\').map(r => r.trim()).filter(Boolean);
+        out += '<span class="cases"><span class="cbrace" style="font-size:' + (rows.length * 1.55) + 'em">{</span><span class="crows">' +
+          rows.map(r => {
+            const parts = r.split('&');
+            return '<span class="crow"><span class="cl">' + tex(parts[0] || '') + '</span><span class="cr">' +
+              tex(parts.slice(1).join('&')) + '</span></span>';
+          }).join('') + '</span></span>';
+        i = close < 0 ? src.length : close + '\\end{cases}'.length;
+      } else if(cmd === 'frac' || cmd === 'dfrac' || cmd === 'tfrac'){
+        const [a, na] = readArg(src, ni);
+        const [b, nb] = readArg(src, na);
+        out += `<span class="frac"><span class="fn">${tex(a)}</span><span class="fd">${tex(b)}</span></span>`;
+        i = nb;
+      } else if(cmd === 'bar'){
+        const [a, na] = readArg(src, ni);
+        out += `<span class="acc">${tex(a)}</span>`;
+        i = na;
+      } else if(cmd === 'overline' || cmd === 'hat' || cmd === 'tilde'){
+        const [a, na] = readArg(src, ni);
+        out += `<span class="ovl">${tex(a)}</span>`;
+        i = na;
+      } else if(cmd === 'mathrm' || cmd === 'text' || cmd === 'mathbf'){
+        const [a, na] = readGroup(src, ni);
+        out += `<span class="up">${esc(a)}</span>`;
+        i = na;
+      } else if(cmd === 'left' || cmd === 'right'){
+        i = ni;
+      } else if(cmd === '{' || cmd === '}'){
+        out += cmd; i = ni;
+      } else if(cmd === '\\'){
+        out += '<br>'; i = ni;
+      } else if(cmd === 'sqrt'){
+        const [a, na] = readArg(src, ni);
+        out += `<span class="sqrt">√<span class="sq">${tex(a)}</span></span>`;
+        i = na;
+      } else if(cmd === 'binom' || cmd === 'C'){
+        const [a, na] = readArg(src, ni);
+        const [b, nb] = readArg(src, na);
+        out += `<span class="binom">C<sub>${tex(a)}</sub><sup>${tex(b)}</sup></span>`;
+        i = nb;
+      } else if(cmd === 'big' || cmd === 'Big' || cmd === 'bigg' || cmd === 'Bigg' ||
+                cmd === 'bigl' || cmd === 'bigr' || cmd === 'Bigl' || cmd === 'Bigr' ||
+                cmd === 'biggl' || cmd === 'biggr' || cmd === 'Biggl' || cmd === 'Biggr'){
+        i = ni;
+      } else if(cmd === 'max' || cmd === 'min' || cmd === 'ln' || cmd === 'log' || cmd === 'exp' || cmd === 'lim' || cmd === 'sup' || cmd === 'inf'){
+        out += '<span class="up">' + cmd + '</span>'; i = ni;
+      } else if(SYM[cmd] !== undefined){
+        out += SYM[cmd];
+        i = ni;
+      } else {
+        out += cmd;
+        i = ni;
+      }
+    } else if(c === '^' || c === '_'){
+      const tag = c === '^' ? 'sup' : 'sub';
+      if(src[i+1] === '{'){
+        const [a, na] = readGroup(src, i+1);
+        out += `<${tag}>${tex(a)}</${tag}>`;
+        i = na;
+      } else {
+        out += `<${tag}>${tex(src[i+1] || '')}</${tag}>`;
+        i += 2;
+      }
+    } else if(c === '~'){ out += '\u00a0'; i++; }
+    else if(c === '<'){ out += '&lt;'; i++; }
+    else if(c === '>'){ out += '&gt;'; i++; }
+    else if(c === '&'){ out += '&amp;'; i++; }
+    else { out += c; i++; }
+  }
+  return out;
+}
+function inline(p){
+  const src = String(p);
+  return src.split(/\$\$([\s\S]*?)\$\$/).map((seg, i) => {
+    if(i % 2) return `<span class="eq eqi">${tex(seg)}</span>`;
+    return seg.split('$').map((s2, j) => j % 2 ? `<span class="m">${tex(s2)}</span>` : esc(s2)).join('');
+  }).join('')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
+}
+function paraHTML(block){
+  const lines = block.split('\n');
+  let html = '', buf = [], list = null;
+  const flushP = () => { if(buf.length){ html += '<p>' + buf.map(inline).join('<br>') + '</p>'; buf = []; } };
+  const flushL = () => { if(list){ html += '<ul style="margin:6px 0 6px 1.15em;padding:0">' + list.map(x => '<li>' + inline(x) + '</li>').join('') + '</ul>'; list = null; } };
+  for(const l of lines){
+    const t2 = l.trim();
+    if(/^[-•]\s+/.test(t2)){ flushP(); (list = list || []).push(t2.replace(/^[-•]\s+/, '')); }
+    else { flushL(); buf.push(l); }
+  }
+  flushP(); flushL();
+  return html;
+}
+function rich(t){
+  const src = String(t||'');
+  const parts = src.split(/\$\$([\s\S]*?)\$\$/);
+  return parts.map((seg, i) => {
+    if(i % 2) return '<div class="eq">' + tex(seg) + '</div>';
+    return seg.split(/\n\s*\n/).filter(Boolean).map(paraHTML).join('');
+  }).join('');
+}
+const SUB = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁻':'-','⁰':'0','¹':'1','²':'2','³':'3'};
+function norm(v){
+  return String(v).normalize('NFKC').replace(/[₀-₉⁻⁰¹²³]/g, c => SUB[c] || c)
+    .toLowerCase().replace(/[−–—]/g,'-').replace(/[×]/g,'*')
+    .replace(/[（]/g,'(').replace(/[）]/g,')').replace(/\s/g,'').replace(/[；;。，,]$/,'');
+}
+function toNum(n){
+  if(/^[+\-]?(\d+(\.\d*)?|\.\d+)(e[+\-]?\d+)?$/.test(n)) return Number(n);
+  const m = n.match(/^([+\-]?\d+(?:\.\d+)?)\/([+\-]?\d+(?:\.\d+)?)$/);
+  if(m) return Number(m[1]) / Number(m[2]);
+  return null;
+}
+function fieldOK(val, f){
+  if(!String(val).trim()) return false;
+  const n = norm(val);
+  if(f.kind === 'num'){
+    const x = toNum(n);
+    if(x === null) return false;
+    const pool = [f.a].concat(f.alt || []).map(v => toNum(norm(String(v)))).filter(v => v !== null);
+    return pool.some(v => Math.abs(x - v) < 1e-3);
+  }
+  return n === norm(f.a) || (f.alt||[]).some(x=>norm(x)===n);
+}
+
+function rec(id){
+  if(!state.rec[id]) state.rec[id] = {picked:null, correct:null, draft:[], mastered:false, starred:false, tried:false, revealed:false};
+  return state.rec[id];
+}
+function done(q){
+  const r = rec(q.id);
+  return q.type === 'subjective' ? r.mastered : r.correct !== null;
+}
+function save(){
+  const el = $('#storage-status');
+  try{
+    localStorage.setItem(KEY, JSON.stringify({v:1, pack:state.pack, filter:state.filter, current:state.current, rec:state.rec}));
+    if(el){ el.textContent = '已保存'; el.classList.remove('error'); }
+  }catch(e){
+    if(el){ el.textContent = '无法保存进度'; el.classList.add('error'); }
+  }
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved.v !== 1 || !saved.rec) return;
+    state.rec = saved.rec;
+    if(PACKS.some(p2 => p2.id === saved.pack)) state.pack = saved.pack;
+    if(FILTERS.some(f => f[0] === saved.filter)) state.filter = saved.filter;
+    if(byId.has(saved.current)) state.current = saved.current;
+  }catch(e){}
+}
+function inPack(){ return QS.filter(q => q.pack === state.pack); }
+function list(){
+  return inPack().filter(q => {
+    const r = rec(q.id);
+    if(state.filter === 'todo') return !done(q);
+    if(state.filter === 'wrong') return r.correct === false;
+    if(state.filter === 'star') return r.starred;
+    return true;
+  });
+}
+
+function tabs(){
+  $('#pack-tabs').innerHTML = PACKS.map(p =>
+    `<button class="tab" role="tab" data-pack="${p.id}" aria-selected="${p.id===state.pack}">${p.head ? esc(p.head) + ' ' : ''}${esc(p.name)}</button>`
+  ).join('');
+  $('#pack-tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => {
+    state.pack = b.dataset.pack; state.filter = 'all';
+    const first = list()[0]; if(first) state.current = first.id;
+    render(); save();
+  });
+}
+function filters(){
+  $('#filters').innerHTML = FILTERS.map(([id,label]) =>
+    `<button class="filter" data-f="${id}" aria-pressed="${id===state.filter}">${label}</button>`
+  ).join('');
+  $('#filters').querySelectorAll('.filter').forEach(b => b.onclick = () => {
+    state.filter = b.dataset.f;
+    const l = list(); if(l.length && !l.some(q=>q.id===state.current)) state.current = l[0].id;
+    render(); save();
+  });
+}
+function sidebar(){
+  const p = PACKS.find(x=>x.id===state.pack) || PACKS[0];
+  const all = inPack();
+  const doneN = all.filter(done).length;
+  const rightN = all.filter(q=>q.type!=='subjective' && rec(q.id).correct===true).length;
+  $('#pack-name').textContent = (p.head ? p.head + ' · ' : '') + p.name;
+  const sub = $('#pack-subtitle');
+  sub.textContent = p.subtitle || '';
+  sub.style.display = p.subtitle ? '' : 'none';
+  $('#done-number').textContent = doneN;
+  $('#correct-number').textContent = rightN;
+  const pct = all.length ? Math.round(doneN/all.length*100) : 0;
+  $('#progress-bar').style.width = pct + '%';
+  $('.progress').setAttribute('aria-valuenow', pct);
+  $('#progress-caption').textContent = all.length ? `完成 ${doneN}/${all.length} 题（${pct}%）` : '';
+  $('#question-map').innerHTML = all.map((q,i) => {
+    const r = rec(q.id);
+    let cls = '';
+    if(q.type==='subjective'){ if(r.mastered) cls='mastered'; }
+    else if(r.correct===true) cls='done';
+    else if(r.correct===false) cls='wrong';
+    if(r.starred) cls += ' star';
+    if(q.id===state.current) cls += ' current';
+    return `<button class="${cls}" data-q="${q.id}" title="${esc(q.id)}">${i+1}</button>`;
+  }).join('');
+  $('#question-map').querySelectorAll('button').forEach(b => b.onclick = () => { state.current = b.dataset.q; render(); save(); });
+  const notesBox = $('#pack-notes');
+  notesBox.style.display = p.notes ? '' : 'none';
+  notesBox.querySelector('.notes-body').innerHTML = rich(p.notes || '');
+  const l = list();
+  $('#filter-count').textContent = `${l.length} 题`;
+}
+
+function render(){
+  tabs(); filters(); sidebar();
+  const l = list();
+  const q = byId.get(state.current);
+  const card = $('#question-card');
+  if(!q){ card.innerHTML = '<div class="empty">这个筛选条件下没有题目。</div>'; $('#page-position').textContent=''; return; }
+  const idx = l.findIndex(x=>x.id===q.id);
+  $('#page-position').textContent = idx >= 0 ? `本组第 ${idx+1} / ${l.length} 题` : '';
+  const r = rec(q.id);
+  const p = PACKS.find(x=>x.id===q.pack);
+  let body = '';
+  if(q.type==='choice' || q.type==='judge'){
+    const opts = q.type==='judge' ? [['对','正确'],['错','错误']] : q.options;
+    body = `<div class="opts ${q.type==='judge'?'judge':''}">` + opts.map(([k,t]) => {
+      let cls = '';
+      if(r.picked){ if(k===q.answer) cls='correct'; else if(k===r.picked) cls='wrong'; }
+      return `<button class="opt ${cls}" data-pick="${k}" ${r.picked?'disabled':''}><span class="k">${esc(k)}</span><span>${inline(t)}</span></button>`;
+    }).join('') + '</div>';
+  } else if(q.type==='fill'){
+    body = q.fields.map((f,i) => `<div class="fillrow"><label>${inline(f.label || ('第 '+(i+1)+' 空'))}</label>
+      <input type="text" data-fill="${i}" value="${esc((r.draft||[])[i]||'')}" placeholder="填答案" autocomplete="off"></div>`).join('')
+      + `<div class="actions"><button class="btn" data-submit="1">提交核对</button><button class="btn ghost" data-clear="1">重填</button></div>`;
+  } else {
+    body = `<div class="actions"><button class="btn ghost" data-reveal="1">${r.mastered?'再看一遍参考答案':'查看参考答案与步骤'}</button>
+      <button class="btn" data-master="1">${r.mastered?'✔ 已标记掌握（点击取消）':'我看懂了，标记为已掌握'}</button></div>`;
+  }
+  card.innerHTML = `
+    <div class="qtop">
+      <span class="badge">${TYPE[q.type] || esc(q.type)}</span>
+      <span class="badge chap">${p ? esc((p.head ? p.head+' ' : '') + p.name) : ''}</span>
+      ${q.points?`<span class="badge pts">${esc(q.points)} 分</span>`:''}
+      <span class="qid">${esc(q.id)}</span>
+      <button class="star" aria-pressed="${!!r.starred}" data-star="1" title="收藏本题">★</button>
+    </div>
+    <h2 class="stem">${inline(q.stem)}${q.note?`<div class="sub">${inline(q.note)}</div>`:''}</h2>
+    ${body}
+    <div id="feedback"></div>
+    <div class="sol ${r.revealed?'show':''}" id="solution"><b>参考答案与解析：</b><br>${rich(q.solution||'')}</div>
+  `;
+  wire(q, r);
+  $('#prev').disabled = idx <= 0;
+  $('#next').disabled = idx < 0 || idx >= l.length-1;
+}
+
+function feedback(kind, html){
+  const box = $('#feedback'); if(!box) return;
+  box.className = 'fb ' + kind;
+  box.innerHTML = html;
+}
+function wire(q, r){
+  const card = $('#question-card');
+  card.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
+    if(r.picked) return;
+    r.picked = b.dataset.pick; r.tried = true;
+    r.correct = r.picked === q.answer;
+    render(); save();
+    const right = q.answer === r.picked;
+    feedback(right?'ok':'no', `<h3>${right?'答对了':'答错了'}</h3><p>正确答案：<b>${esc(q.answer)}</b></p>`);
+    $('#solution').classList.add('show'); r.revealed = true;
+    $('#feedback').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  card.querySelectorAll('[data-fill]').forEach(inp => inp.oninput = () => {
+    r.draft = r.draft || []; r.draft[+inp.dataset.fill] = inp.value;
+  });
+  const sub = card.querySelector('[data-submit]');
+  if(sub) sub.onclick = () => {
+    const vals = q.fields.map((f,i)=>(r.draft||[])[i]||'');
+    if(vals.some(v=>!String(v).trim())){ feedback('info','<p>先把空填完再提交。</p>'); return; }
+    const okAll = q.fields.every((f,i)=>fieldOK(vals[i], f));
+    r.correct = okAll; r.tried = true;
+    render(); save();
+    feedback(okAll?'ok':'no', okAll
+      ? '<h3>全部正确</h3>'
+      : `<h3>有空格不对</h3><p>参考答案：<b>${q.fields.map((f,i)=>`(${i+1}) ${esc(f.a)}`).join('；')}</b></p>`);
+    $('#solution').classList.add('show');
+  };
+  const clr = card.querySelector('[data-clear]');
+  if(clr) clr.onclick = () => { r.draft=[]; r.correct=null; render(); save(); };
+  const rev = card.querySelector('[data-reveal]');
+  if(rev) rev.onclick = () => { r.revealed = true; $('#solution').classList.add('show'); };
+  const mas = card.querySelector('[data-master]');
+  if(mas) mas.onclick = () => { r.mastered = !r.mastered; render(); save(); };
+  const star = card.querySelector('[data-star]');
+  if(star) star.onclick = () => { r.starred = !r.starred; render(); save(); };
+  if(q.type==='choice' || q.type==='judge'){
+    if(r.picked){
+      const right = r.picked === q.answer;
+      feedback(right?'ok':'no', `<h3>${right?'答对了':'答错了'}</h3><p>正确答案：<b>${esc(q.answer)}</b></p>`);
+      $('#solution').classList.add('show');
+    }
+  }
+  if(q.type==='fill' && r.correct !== null){
+    feedback(r.correct?'ok':'no', r.correct ? '<h3>全部正确</h3>' : `<h3>有空格不对</h3><p>参考答案：<b>${q.fields.map((f,i)=>`(${i+1}) ${esc(f.a)}`).join('；')}</b></p>`);
+    $('#solution').classList.add('show');
+  }
+}
+function go(step){
+  const l = list(); const i = l.findIndex(x=>x.id===state.current);
+  const nx = l[i+step]; if(!nx) return;
+  state.current = nx.id; render(); save(); window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#prev').onclick = () => go(-1);
+$('#next').onclick = () => go(1);
+$('#reset-all').onclick = () => {
+  if(!confirm('确定清空所有答题记录吗？此操作不可撤销。')) return;
+  state.rec = {}; state.current = inPack()[0]?.id || state.current;
+  render(); save();
+  $('#storage-status').textContent = '记录已清空';
+};
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if(e.key === 'ArrowLeft') go(-1);
+  if(e.key === 'ArrowRight') go(1);
+});
+if(window.innerWidth < 700) $('#pack-notes').removeAttribute('open');
+load();
+if(!PACKS.some(p=>p.id===state.pack)) state.pack = PACKS[0].id;
+if(!byId.has(state.current)){
+  const first = QS.find(q=>q.pack===state.pack);
+  if(first) state.current = first.id;
+}
+render();
+</script>
+__BODY_EXTRA__
+</body>
+</html>
